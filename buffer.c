@@ -72,7 +72,7 @@ Buffer* b_allocate(short init_capacity, char inc_factor, char o_mode)
 
 	/* check if valid input */
 	if (init_capacity < 0 || init_capacity > MAX_CAP) {
-		return NULL;	
+		return NULL;
 	}
 
 	if (init_capacity != 0) {
