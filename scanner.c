@@ -1,16 +1,20 @@
-/* Filename: scanner.c
-/* PURPOSE:
- *    SCANNER.C: Functions implementing a Lexical Analyzer (Scanner)
- *    as required for CST8152, Assignment #2
- *    scanner_init() must be called before using the scanner.
- *    The file is incomplete;
- *    Provided by: Svillen Ranev
- *    Version: 1.19.2
- *    Date: 2 October 2019
- *******************************************************************
- *    REPLACE THIS HEADER WITH YOUR HEADER
- *******************************************************************
- */
+/************************************************
+Filename:                       scanner.c
+Compiler:						MS Visual Studio Enterprise 2019
+Version:                        1.0
+Authors:		                Kai Ekdal & Olivier Lauzon
+Student Number:                 040918802 & 040918796
+Course Name/Number:             Compilers CST8152
+Lab Section:					312
+Assignment # :                  2
+Assignment Name:                Building a Lexical Analyzer (Scanner)
+Date:							November 12, 2019
+Submission Date:                November 12, 2019
+Professor:						Svillen Ranev
+List of Source and Header Files:buffer.c, scanner.c, buffer.h, table.h, token.h
+Purpose:						Functions to implement a lexical analyzer
+Function list:
+*************************************************/
 
 /* The #define _CRT_SECURE_NO_WARNINGS should be used in MS Visual Studio projects
  * to suppress the warnings about using "unsafe" functions like fopen()
