@@ -272,11 +272,11 @@ Token malar_next_token(void) {
 					if (as_table[state] == ASWR) {
 						b_retract(sc_buf);
 					}
-
+					 
 					/*Create temporary buffer for the lexeme*/
 					lexend = b_getcoffset(sc_buf);
 					lexLength = lexend - lexstart;
-					char* tempLexBuf = malloc(lexLength + 1);
+					char* tempLexBuf = malloc((size_t)lexLength + 1);
 					
 					/*Check for runtime error*/
 					if (tempLexBuf == NULL) {
