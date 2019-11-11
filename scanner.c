@@ -67,7 +67,7 @@ static pBuffer sc_buf; /*pointer to input source buffer*/
 /* scanner.c static(local) function  prototypes */
 static int char_class(char c); /* character class function */
 static int get_next_state(int, char); /* state machine function */
-static int iskeyword(char* kw_lexeme); /*keywords lookup functuion */
+static int iskeyword(char* kw_lexeme); /*keywords lookup function */
 
 
 /*Initializes scanner */
@@ -366,7 +366,7 @@ int char_class(char c) {
 	return 7;
 }
 
-/*HERE YOU WRITE THE DEFINITIONS FOR YOUR ACCEPTING FUNCTIONS.
+/* DEFINITIONS FOR YOUR ACCEPTING FUNCTIONS.
 ************************************************************
 
 ACCEPTING FUNCTION FOR THE arithmentic variable identifier AND keywords (VID - AVID/KW)
@@ -374,17 +374,45 @@ REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
 
 /*****************************************
 Function Name:		aa_func02
-Purpose:			
+Purpose:			accepting function for the arithmentic variable identifier 
+					and keywords (VID - AVID/KW)
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	isalpha()
-Parameters:			char c - input character
-Return value:		int - column number in the transition table for the input character
-Algorithm:			Check if the current char value in the lexeme
-					Return the related column number for the state to be assigned
+Called functions:	iskeyword(), strlen(), sprintf()
+Parameters:			char lexeme[] - character
+Return value:		Token - attribute code for the keyword
+Algorithm:			Check if the lexeme is a keyword
+					If yes, return a token with the corresponding attribute 
+					If not, check the length of the lexeme
+					Store only the first VID_LEN characters if length of lexeme is longer
+					Add a null terminator at the end to make it a string
 *****************************************/
 Token aa_func02(char lexeme[]) {
 	Token t = { 0 };
+	/* variable to hold the index of the keyword, if available */
+	int index;
+	
+	/* set a variable to hold the value of whether the input is a keyword */
+	index = iskeyword(lexeme);
+
+	/* return a token with the corresponding attribute if the lexeme is a key word */
+	if (index >= 0) {
+		t.code = KW_T;
+		/* set the keyword attribute to the index in the keyword table */
+		t.attribute.kwt_idx = index;
+		return t;
+	}
+
+	/* if the lexeme is not a keyword, set a AVID token */
+	t.code = AVID_T;
+
+	/* store only the first VID_LEN characters if the lexeme is longer than VID_LEN */
+	if (strlen(lexeme) > VID_LEN) {
+		sprintf(t.attribute.vid_lex, "%.8s", lexeme);
+		return t;
+	}
+	
+	sprintf(t.attribute.vid_lex, "%s", lexeme);
 	/*WHEN CALLED THE FUNCTION MUST
 	1. CHECK IF THE LEXEME IS A KEYWORD.
 		IF YES, IT MUST RETURN A TOKEN WITH THE CORRESPONDING ATTRIBUTE
@@ -403,8 +431,33 @@ Token aa_func02(char lexeme[]) {
 /*ACCEPTING FUNCTION FOR THE string variable identifier (VID - SVID)
 REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
 
+/*****************************************
+Function Name:		aa_func03
+Purpose:			accepting function for the string variable identifier
+					(VID - SVID)
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	strlen(), sprintf()
+Parameters:			char lexeme[] - character
+Return value:		Token - string literal
+Algorithm:			Set an SVID token
+					Store the first VID_LEN-1 characters in the attribute array
+					Append @ and a null terminator at the end to make it a string
+*****************************************/
 Token aa_func03(char lexeme[]) {
 	Token t = { 0 };
+
+	/* set the SVID token */
+	t.code = SVID_T;
+
+	/* store the first VID_LEN-1 characters if lexeme is longer than VID_LEN */
+	if (strlen(lexeme) > VID_LEN) {
+		/* appends @ and /0 to the name */
+		sprintf(t.attribute.vid_lex, "%.7s@", lexeme);
+		return t;
+	}
+
+	sprintf(t.attribute.vid_lex, "%s@", lexeme);
 	/*WHEN CALLED THE FUNCTION MUST
 	1. SET a SVID TOKEN.
 		IF THE lexeme IS LONGER than VID_LEN characters,
@@ -417,8 +470,24 @@ Token aa_func03(char lexeme[]) {
 
 /*ACCEPTING FUNCTION FOR THE integer literal(IL) - decimal constant (DIL)*/
 
+/*****************************************
+Function Name:		aa_func05
+Purpose:			accepting function for the integer literal (IL) - decimal constant (DIL)
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	strlen(), strcpy()
+Parameters:			char lexeme[] - character
+Return value:		Token 
+Algorithm:			Set an SVID token
+					Store the first VID_LEN-1 characters in the attribute array
+					Append @ and a null terminator at the end to make it a string
+*****************************************/
 Token aa_func05(char lexeme[]) {
 	Token t = { 0 };
+
+	/* convert the decimal constant lexeme to a decimal integer value */
+
+
 	/*THE FUNCTION MUST CONVERT THE LEXEME REPRESENTING A DECIMAL CONSTANT
 	TO A DECIMAL INTEGER VALUE, WHICH IS THE ATTRIBUTE FOR THE TOKEN.
 	THE VALUE MUST BE IN THE SAME RANGE AS the value of 2-byte integer in C.
@@ -481,6 +550,35 @@ Token aa_func11_12(char lexeme[]) {
 
 /*HERE YOU WRITE YOUR ADDITIONAL FUNCTIONS (IF ANY). FOR EXAMPLE*/
 
+/*****************************************
+Function Name:		iskeyword
+Purpose:			keywords lookup function 
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	n/a
+Parameters:			char* kw_lexeme - keyword
+Return value:		int index of the keyword in the array  
+					-1, if unsuccessful
+Algorithm:			Check if the input is available
+					Iterate through the keyword array and compare with the input
+					Return the index of the keyword
+*****************************************/
 int iskeyword(char* kw_lexeme) {
-	return 0;
+	
+	/* return -1 if the keyword lexeme is null */
+	if (kw_lexeme == NULL) {
+		return -1;
+	}
+
+	/* iterate through the array */
+	for (int i = 0; i < KWT_SIZE; i++) {
+		/* if the strcmp returns 0, it's a match */
+		if (strcmp(kw_lexeme, kw_table[i]) == 0) {
+			/* return the index of the keyword */
+			return i;
+		}
+	}
+
+	/* returns -1 if not found or no matches available */
+	return -1;
 }
