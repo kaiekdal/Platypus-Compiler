@@ -83,23 +83,17 @@ int scanner_init(pBuffer psc_buf) {
 }
 
 /*****************************************
-Function Name:		b_allocate
-Purpose:			creates a new buffer in memory
-Author:				Kai Ekdal
+Function Name:		malar_next_token
+Purpose:			
+Authors:			Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
-Called functions:	calloc(), malloc(), sizeof(), free()
+Called functions:	b_getc(), malloc(), sizeof(), free()
 Parameters:  		short init_capacity - initial capacity
 					char inc_factor - increment factor
 					char o_mode - operational mode
-Return value:		pointer to the buffer
+Return value:		
 					null, if unsuccessful
-Algorithm:			Allocate memory for the buffer structure
-					Check if the buffer is valid
-					Check the validity of the initial capacity of the buffer
-					Allocate memory for the character buffer
-					Check the mode
-					Assign values depending on mode
-					Return a pointer to the buffer structure
+Algorithm:			
 *****************************************/
 Token malar_next_token(void) {
 	{
