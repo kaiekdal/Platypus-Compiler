@@ -112,26 +112,26 @@ Token malar_next_token(void) {
 		/* Tokens to be handled in this part
 			*  ['=', ' ', '(', ')', '{', '}', ==, <>, '>', '<', ';', white space, !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF
 			*/
-			/*['(', ')', '{', '}', ==, <>, '>', '<', ';', !!comment, ',', '-', '+', '*', '/', <<, SEOF*/
+			/*['(', ')', '{', '}', <>, '>', '<', ';', !!comment, ',', '-', '+', '*', '/', <<, SEOF*/
 		switch (c) {
-			/*Whitespace cases*/
+			/* Whitespace cases */
 			case NEWLINE_VAL: case CR_VAL:
 				line++;
 			case SPACE_VAL: case TAB_VAL:
 				continue;
 
-			/*Tokens that begin with '='*/
+			/* Tokens that begin with '=' */
 			case EQUALS_VAL:
 				lexstart = b_getcoffset(sc_buf);
 				c = b_getc(sc_buf);
 
-				/*Case for the "==" lexeme*/
+				/*Case for the "==" lexeme */
 				if (c == EQUALS_VAL) {
 					t.code = REL_OP_T;
 					t.attribute.rel_op = EQ;
 					return t;
 				}
-				/*Case for the "=" lexeme*/
+				/* Case for the "=" lexeme */
 				b_retract(sc_buf);
 				t.code = ASS_OP_T;
 				return t;
@@ -323,12 +323,6 @@ int char_class(char c) {
 	/* return other if no other condition is met */
 	return 7;
 }
-
-int get_next_state(int currentState, char currentChar) {
-	return 0;
-}
-
-
 
 /*HERE YOU WRITE THE DEFINITIONS FOR YOUR ACCEPTING FUNCTIONS.
 ************************************************************
