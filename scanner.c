@@ -586,7 +586,7 @@ Token aa_func05(char lexeme[]) {
 	long value = atol(lexeme);
 
 	/* return error token lexeme if value out of range as the value of a 2-byte integer */
-	if (value > SHRT_MAX || value < 0) {
+	if (value > SHRT_MAX || value < SHRT_MIN) {
 		t.code = ERR_T;
 		/* store only the first ERR_LEN-3 characters if error is longer
 		than ERR_LEN and append ellipses to the err_lex */
@@ -598,6 +598,13 @@ Token aa_func05(char lexeme[]) {
 		sprintf(t.attribute.err_lex, "%s", lexeme);
 		return t;
 	}
+
+	/*Check if integer has more than 5 digits and truncate excess digits*/
+	if (strlen(lexeme) > INL_LEN) {
+		sprintf(lexeme, "%.5s", lexeme);
+		value = atol(lexeme);
+	}
+	/*Logic for int with more than 5 digits*/
 
 	/* set the appropriate token code and attribute */
 	t.code = INL_T;
@@ -627,6 +634,21 @@ Algorithm:
 *****************************************/
 Token aa_func08(char lexeme[]) {
 	Token t = { 0 };
+
+	double value = atof(lexeme);
+
+	if (value > FLT_MAX || value < FLT_MIN) {
+		t.code = ERR_T;
+		/* store only the first ERR_LEN-3 characters if error is longer
+		than ERR_LEN and append ellipses to the err_lex */
+		if (strlen(lexeme) > ERR_LEN) {
+			sprintf(t.attribute.err_lex, "%.17s...", lexeme);
+			return t;
+		}
+
+		sprintf(t.attribute.err_lex, "%s", lexeme);
+		return t;
+	}
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
 	WHICH IS THE ATTRIBUTE FOR THE TOKEN.
 	THE VALUE MUST BE IN THE SAME RANGE AS the value of 4 - byte float in C.
@@ -636,6 +658,8 @@ Token aa_func08(char lexeme[]) {
 	STORED IN err_lex.THEN THREE DOTS ... ARE ADDED TO THE END OF THE
 	err_lex C - type string.
 	BEFORE RETURNING THE FUNCTION MUST SET THE APROPRIATE TOKEN CODE*/
+	t.code = FPL_T;
+	t.attribute.flt_value = (float)value;
 	return t;
 }
 
