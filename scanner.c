@@ -647,6 +647,7 @@ Token aa_func08(char lexeme[]) {
 		}
 
 		sprintf(t.attribute.err_lex, "%s", lexeme);
+
 		return t;
 	}
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
@@ -660,6 +661,7 @@ Token aa_func08(char lexeme[]) {
 	BEFORE RETURNING THE FUNCTION MUST SET THE APROPRIATE TOKEN CODE*/
 	t.code = FPL_T;
 	t.attribute.flt_value = (float)value;
+
 	return t;
 }
 
@@ -675,6 +677,11 @@ Algorithm:
 *****************************************/
 Token aa_func10(char lexeme[]) {
 	Token t = { 0 };
+
+	/* set the attribute for the token */
+
+	
+
 	/*THE FUNCTION MUST STORE THE lexeme PARAMETER CONTENT INTO THE STRING LITERAL TABLE(str_LTBL)
 	FIRST THE ATTRIBUTE FOR THE TOKEN MUST BE SET.
 	THE ATTRIBUTE OF THE STRING TOKEN IS THE OFFSET FROM
