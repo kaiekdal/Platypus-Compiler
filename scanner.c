@@ -112,7 +112,7 @@ Token malar_next_token(void) {
 		/* Tokens to be handled in this part
 			*  ['=', ' ', '(', ')', '{', '}', ==, <>, '>', '<', ';', white space, !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF
 			*/
-			/*['=', '(', ')', '{', '}', ==, <>, '>', '<', ';', !!comment, ',', '-', '+', '*', '/', <<, SEOF*/
+			/*['(', ')', '{', '}', ==, <>, '>', '<', ';', !!comment, ',', '-', '+', '*', '/', <<, SEOF*/
 		switch (c) {
 			/*Whitespace cases*/
 			case NEWLINE_VAL: case CR_VAL:
@@ -123,6 +123,19 @@ Token malar_next_token(void) {
 			/*Tokens that begin with '='*/
 			case EQUALS_VAL:
 				lexstart = b_getcoffset(sc_buf);
+				c = b_getc(sc_buf);
+
+				/*Case for the "==" lexeme*/
+				if (c == EQUALS_VAL) {
+					t.code = REL_OP_T;
+					t.attribute.rel_op = EQ;
+					return t;
+				}
+				/*Case for the "=" lexeme*/
+				b_retract(sc_buf);
+				t.code = ASS_OP_T;
+				return t;
+
 			case LPAR_VAL:
 			case RPAR_VAL:
 			case LBRACE_VAL:
@@ -235,7 +248,7 @@ Token malar_next_token(void) {
 		//				b_free(lex_buf);
 		//			return t;
 	}/*end while(1)*/
-}
+}/*end of malar_next_token*/
 
 int get_next_state(int state, char c) {
 	int col;
