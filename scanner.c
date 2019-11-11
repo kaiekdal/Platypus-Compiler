@@ -647,6 +647,7 @@ Token aa_func08(char lexeme[]) {
 		}
 
 		sprintf(t.attribute.err_lex, "%s", lexeme);
+
 		return t;
 	}
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
@@ -660,6 +661,7 @@ Token aa_func08(char lexeme[]) {
 	BEFORE RETURNING THE FUNCTION MUST SET THE APROPRIATE TOKEN CODE*/
 	t.code = FPL_T;
 	t.attribute.flt_value = (float)value;
+
 	return t;
 }
 
