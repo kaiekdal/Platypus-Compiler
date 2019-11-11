@@ -583,17 +583,21 @@ Token aa_func05(char lexeme[]) {
 	long value = atol(lexeme);
 
 	/* return error token lexeme if value out of range as the value of a 2-byte integer */
-	if (value > SHRT_MAX || value < SHRT_MIN) {
+	if (value > SHRT_MAX || value < 0) {
 		t.code = ERR_T;
-		
+		/* store only the first ERR_LEN-3 characters if error is longer
+		than ERR_LEN and append ellipses to the err_lex */
+		if (strlen(lexeme) > ERR_LEN) {
+			sprintf(t.attribute.err_lex, "%.17s...", lexeme);
+			return t;
+		}
+
+		sprintf(t.attribute.err_lex, "%s", lexeme);
+		return t;
 	}
-	   
-	/* store only the first ERR_LEN-3 characters if error is longer than ERR_LEN */
 
-	/* append ellipses to the err_lex */
-	sprintf(t.attribute.err_lex, "%s...", lexeme);
-
-	/* set the appropriate token code */
+	/* set the appropriate token code and attribute */
+	t.code = INL_T;
 	t.attribute.int_value = value;
 
 	/*THE FUNCTION MUST CONVERT THE LEXEME REPRESENTING A DECIMAL CONSTANT
