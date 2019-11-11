@@ -120,12 +120,12 @@ int as_table[] = {
 };
 
 /* Accepting action function declarations */
-Token aa_func02(char* lexeme);
-Token aa_func03(char* lexeme);
-Token aa_func05(char* lexeme);
-Token aa_func08(char* lexeme);
-Token aa_func10(char* lexeme);
-Token aa_func11_12(char* lexeme); /*Will be used for state 12 as well*/
+Token aa_func02(char lexeme[]);
+Token aa_func03(char lexeme[]);
+Token aa_func05(char lexeme[]);
+Token aa_func08(char lexeme[]);
+Token aa_func10(char lexeme[]);
+Token aa_func11_12(char lexeme[]); /*Will be used for state 12 as well*/
 
 /* defining a new type: pointer to function (of one char * argument)
    returning Token
