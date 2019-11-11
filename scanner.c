@@ -83,7 +83,7 @@ int scanner_init(pBuffer psc_buf) {
 
 /*****************************************
 Function Name:		malar_next_token
-Purpose:			
+Purpose:			performs token recognition 
 Authors:			Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	b_getc(), malloc(), sizeof(), free()
@@ -394,10 +394,11 @@ Function Name:		get_next_state
 Purpose:			returns the next state
 Author:				Sv. Ranev
 History/Versions:	1.0
-Called functions:	n/a
+Called functions:	char_class(), assert()
 Parameters:			char c - input character
 Return value:		int - next state 
-Algorithm:
+					error message, if illegal state
+Algorithm:			check the next state and return it
 *****************************************/
 int get_next_state(int state, char c) {
 
@@ -573,12 +574,11 @@ Function Name:		aa_func05
 Purpose:			accepting function for the integer literal (IL) - decimal constant (DIL)
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	strlen()
+Called functions:	strlen(), atol()
 Parameters:			char lexeme[] - character
 Return value:		Token - decimal constant (DIL)
 Algorithm:			Convert the decimal constant lexeme to a decimal integer value
-					Check the range of the value is within the range of a short integer
-					
+					Check the range of the value is within the range of a short integer				
 *****************************************/
 Token aa_func05(char lexeme[]) {
 	Token t = { 0 };
@@ -595,12 +595,11 @@ Token aa_func05(char lexeme[]) {
 			sprintf(t.attribute.err_lex, "%.17s...", lexeme);
 			return t;
 		}
-
 		sprintf(t.attribute.err_lex, "%s", lexeme);
 		return t;
 	}
 
-	/*Check if integer has more than 5 digits and truncate excess digits*/
+	/* Check if integer has more than 5 digits and truncate excess digits */
 	if (strlen(lexeme) > INL_LEN) {
 		sprintf(lexeme, "%.5s", lexeme);
 		value = atol(lexeme);
@@ -628,10 +627,10 @@ Function Name:		aa_func08
 Purpose:			accepting function for the floating - point literal (FPL)
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	
+Called functions:	atof(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
 Return value:		Token - floating point literal (FPL)
-Algorithm:
+Algorithm:			
 *****************************************/
 Token aa_func08(char lexeme[]) {
 	Token t = { 0 };
