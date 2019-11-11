@@ -69,7 +69,7 @@ static int char_class(char c); /* character class function */
 static int get_next_state(int, char); /* state machine function */
 static int iskeyword(char* kw_lexeme); /*keywords lookup function */
 
-/*Initializes scanner */
+/* Initializes scanner */
 int scanner_init(pBuffer psc_buf) {
 	if (b_isempty(psc_buf)) return EXIT_FAILURE;/*1*/
 	/* in case the buffer has been read previously  */
@@ -90,9 +90,11 @@ Called functions:	b_getc(), malloc(), sizeof(), free()
 Parameters:  		short init_capacity - initial capacity
 					char inc_factor - increment factor
 					char o_mode - operational mode
-Return value:		
+Return value:		Token
 					null, if unsuccessful
-Algorithm:			
+Algorithm:			Read the lexeme from the input buffer, character by character
+					Return a token structure when a token pattern matching the lexeme is found
+					Ignore whitespace, comments, all symbols of the comment, including terminator			
 *****************************************/
 Token malar_next_token(void) {
 
@@ -104,7 +106,7 @@ Token malar_next_token(void) {
 
 	while (1) { /* endless loop broken by token returns it will generate a warning */
 
-		/*Get the next symbol from the input buffer*/
+		/* Get the next symbol from the input buffer */
 		c = b_getc(sc_buf);
 
 		/* Part 1: Implementation of token driven scanner. Every token is possessed by its own dedicated code */
@@ -199,7 +201,6 @@ Token malar_next_token(void) {
 							t.attribute.log_op = OR;
 							return t;
 						}
-
 					}
 				}
 				t.code = ERR_T;
