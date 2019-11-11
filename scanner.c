@@ -26,12 +26,12 @@ Function list:					scanner_init();
 								iskeyword();
 *************************************************/
 
-
  /* The #define _CRT_SECURE_NO_WARNINGS should be used in MS Visual Studio projects
   * to suppress the warnings about using "unsafe" functions like fopen()
   * and standard sting library functions defined in string.h.
   * The define does not have any effect in Borland compiler projects.
   */
+
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>   /* standard input / output */
@@ -474,11 +474,7 @@ int char_class(char c) {
 	return 7;
 }
 
-/* DEFINITIONS FOR YOUR ACCEPTING FUNCTIONS.
-************************************************************
-
-ACCEPTING FUNCTION FOR THE arithmentic variable identifier AND keywords (VID - AVID/KW)
-REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
+/* ACCEPTING FUNCTIONS */
 
 /*****************************************
 Function Name:		aa_func02
@@ -533,9 +529,6 @@ Token aa_func02(char lexeme[]) {
 		ADD \0 AT THE END TO MAKE A C-type STRING.*/
 	return t;
 }
-
-/*ACCEPTING FUNCTION FOR THE string variable identifier (VID - SVID)
-REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
 
 /*****************************************
 Function Name:		aa_func03
@@ -616,8 +609,16 @@ Token aa_func05(char lexeme[]) {
 	return t;
 }
 
-/*ACCEPTING FUNCTION FOR THE floating - point literal(FPL)*/
-
+/*****************************************
+Function Name:		aa_func08
+Purpose:			accepting function for the floating - point literal (FPL)
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	
+Parameters:			char lexeme[] - character
+Return value:		Token - floating point literal (FPL)
+Algorithm:
+*****************************************/
 Token aa_func08(char lexeme[]) {
 	Token t = { 0 };
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
@@ -632,8 +633,16 @@ Token aa_func08(char lexeme[]) {
 	return t;
 }
 
-/*ACCEPTING FUNCTION FOR THE string literal(SL)*/
-
+/*****************************************
+Function Name:		aa_func10
+Purpose:			accepting function for the string literal (SL)
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:
+Parameters:			char lexeme[] - character
+Return value:		Token - string literal (SL)
+Algorithm:
+*****************************************/
 Token aa_func10(char lexeme[]) {
 	Token t = { 0 };
 	/*THE FUNCTION MUST STORE THE lexeme PARAMETER CONTENT INTO THE STRING LITERAL TABLE(str_LTBL)
@@ -649,10 +658,24 @@ Token aa_func10(char lexeme[]) {
 	return t;
 }
 
-/*ACCEPTING FUNCTION FOR THE ERROR TOKEN*/
-
+/*****************************************
+Function Name:		aa_func11_12
+Purpose:			accepting function for the error token
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:
+Parameters:			char lexeme[] - character
+Return value:		Token
+Algorithm:
+*****************************************/
 Token aa_func11_12(char lexeme[]) {
 	Token t = { 0 };
+
+	/* set the error token */
+	t.code = ERR_T;
+
+
+
 	/*THE FUNCTION SETS THE ERROR TOKEN. lexeme[] CONTAINS THE ERROR
 	THE ATTRIBUTE OF THE ERROR TOKEN IS THE lexeme CONTENT ITSELF
 	AND IT MUST BE STORED in err_lex. IF THE ERROR lexeme IS LONGER
