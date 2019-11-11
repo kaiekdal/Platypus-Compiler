@@ -271,18 +271,57 @@ int get_next_state(int state, char c) {
 	return next;
 }
 
+/*****************************************
+Function Name:		char_class
+Purpose:			returns the column index in the transition table 
+					that represents a character or character class					
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	n/a
+Parameters:			char c - input character
+Return value:		column number in the transition table for the input character
+Algorithm:			
+*****************************************/
 int char_class(char c) {
 	int val;
 
-	/*THIS FUNCTION RETURNS THE COLUMN NUMBER IN THE TRANSITION
-	TABLE st_table FOR THE INPUT CHARACTER c.
-	SOME COLUMNS MAY REPRESENT A CHARACTER CLASS .
-	FOR EXAMPLE IF COLUMN 2 REPRESENTS [A-Za-z]
-	THE FUNCTION RETURNS 2 EVERY TIME c IS ONE
-	OF THE LETTERS A,B,...,Z,a,b...z.
-	PAY ATTENTION THAT THE FIRST COLOMN IN THE TT IS 0 (has index 0)*/
+	/* return 0 for [a-zA-Z] */
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) { 
+		return 0; 
+	}
 
-	return val;
+	/* return 1 for 0 */
+	if (c == '0') { 
+		return 1; 
+	}
+
+	/* return 2 for [1-9]*/
+	if (c >= '1' && c <= '9') {
+		return 2;
+	}
+
+	/* return 3 for the dot (.) value */
+	if (c == DOT_VAL) {
+		return 3;
+	}
+
+	/* return 4 for the @ character */
+	if (c == AT_VAL) {
+		return 4;
+	}
+
+	/* return 5 for the quotation (") symbol */
+	if (c == QUOTE_VAL) {
+		return 5;
+	}
+
+	/* return 6 for the SEOF */
+	if (c == NULLTERM_VAL || c == EOF || c == EOF_VAL2) {
+		return 6;
+	}
+
+	/* return other if no other condition is met */
+	return 7;
 }
 
 int get_next_state(int currentState, char currentChar) {
