@@ -57,6 +57,7 @@ Function list:					aa_func02();
 #define DOT_VAL '.'
 #define EOF_VAL1 '\0'
 #define EOF_VAL2 '0xFF'
+#define NULLTERM_VAL '\0'
 #define AT_VAL '@'
 /*Assignment and comparison operators*/
 #define EQUALS_VAL '='
