@@ -110,49 +110,79 @@ Token malar_next_token(void) {
 
 		/* Part 1: Implementation of token driven scanner. Every token is possessed by its own dedicated code */
 		/* Tokens to be handled in this part
-			*  ['=', ' ', '(', ')', '{', '}', ==, <>, '>', '<', ';', white space, !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF
-			*/
-			/*['(', ')', '{', '}', <>, '>', '<', ';', !!comment, ',', '-', '+', '*', '/', <<, SEOF*/
+		*  ['=', ' ', '(', ')', '{', '}', ==, <>, '>', '<', ';', white space, !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF
+		*/
+		/*['(', ')', '{', '}', '>', ';', !!comment, ',', '-', '+', '*', '/', SEOF*/
 		switch (c) {
-			/* Whitespace cases */
+			/*Whitespace cases*/
 			case NEWLINE_VAL: case CR_VAL:
 				line++;
 			case SPACE_VAL: case TAB_VAL:
 				continue;
 
-			/* Tokens that begin with '=' */
+			/*Tokens that begin with '='*/
 			case EQUALS_VAL:
-				lexstart = b_getcoffset(sc_buf);
 				c = b_getc(sc_buf);
 
-				/*Case for the "==" lexeme */
+				/*Case for the "==" lexeme*/
 				if (c == EQUALS_VAL) {
 					t.code = REL_OP_T;
 					t.attribute.rel_op = EQ;
 					return t;
 				}
-				/* Case for the "=" lexeme */
+				/*Case for the "=" lexeme*/
 				b_retract(sc_buf);
 				t.code = ASS_OP_T;
 				return t;
+
+			/*Tokens that begin with '<'*/
+			case LESS_THAN_VAL:
+				c = b_getc(sc_buf);
+
+				/*Case for the "<<" lexeme*/
+				if (c == LESS_THAN_VAL) {
+					t.code = SCC_OP_T;
+					return t;
+				}
+				/*Case for the "<>" lexeme*/
+				if (c == GREATER_THAN_VAL) {
+					t.code = REL_OP_T;
+					t.attribute.rel_op = NE;
+					return t;
+				}
+				/*Case for the "<" lexeme*/
+				b_retract(sc_buf);
+				t.code = REL_OP_T;
+				t.attribute.rel_op = LT;
+				return t;
+
+			/*Tokens that begin with '!'*/
+			case NOT_VAL:
+				c = b_getc(sc_buf);
+
+				if (c == NOT_VAL) {
+					while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF && c != EOF_VAL2) {
+						c = b_getc(sc_buf);
+					}
+					line++;
+					continue;
+				}
+
 
 			case LPAR_VAL:
 			case RPAR_VAL:
 			case LBRACE_VAL:
 			case RBRACE_VAL:
 			case GREATER_THAN_VAL:
-			case LESS_THAN_VAL:
 			case SEMI_COLON_VAL:
-			case NOT_VAL:
 			case COMMA_VAL:
 			case MINUS_VAL:
 			case PLUS_VAL:
 			case MULTIPLY_VAL:
 			case DIVIDE_VAL:
 				/*SEOF cases*/
-			case EOF:
+			case EOF_VAL1:
 			case EOF_VAL2:
-			case NULLTERM_VAL:
 				/*".AND.", ".OR."*/
 			case DOT_VAL:
 				/*Utilize finite state machine*/
@@ -316,7 +346,7 @@ int char_class(char c) {
 	}
 
 	/* return 6 for the SEOF */
-	if (c == NULLTERM_VAL || c == EOF || c == EOF_VAL2) {
+	if (c == EOF_VAL1 || c == EOF_VAL2) {
 		return 6;
 	}
 
@@ -331,7 +361,7 @@ ACCEPTING FUNCTION FOR THE arithmentic variable identifier AND keywords (VID - A
 REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
 
 Token aa_func02(char lexeme[]) {
-	Token t;
+	Token t = { 0 };
 	/*WHEN CALLED THE FUNCTION MUST
 	1. CHECK IF THE LEXEME IS A KEYWORD.
 		IF YES, IT MUST RETURN A TOKEN WITH THE CORRESPONDING ATTRIBUTE
@@ -351,7 +381,7 @@ Token aa_func02(char lexeme[]) {
 REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
 
 Token aa_func03(char lexeme[]) {
-	Token t;
+	Token t = { 0 };
 	/*WHEN CALLED THE FUNCTION MUST
 	1. SET a SVID TOKEN.
 		IF THE lexeme IS LONGER than VID_LEN characters,
@@ -365,7 +395,7 @@ Token aa_func03(char lexeme[]) {
 /*ACCEPTING FUNCTION FOR THE integer literal(IL) - decimal constant (DIL)*/
 
 Token aa_func05(char lexeme[]) {
-	Token t;
+	Token t = { 0 };
 	/*THE FUNCTION MUST CONVERT THE LEXEME REPRESENTING A DECIMAL CONSTANT
 	TO A DECIMAL INTEGER VALUE, WHICH IS THE ATTRIBUTE FOR THE TOKEN.
 	THE VALUE MUST BE IN THE SAME RANGE AS the value of 2-byte integer in C.
@@ -381,7 +411,7 @@ Token aa_func05(char lexeme[]) {
 /*ACCEPTING FUNCTION FOR THE floating - point literal(FPL)*/
 
 Token aa_func08(char lexeme[]) {
-	Token t;
+	Token t = { 0 };
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
 	WHICH IS THE ATTRIBUTE FOR THE TOKEN.
 	THE VALUE MUST BE IN THE SAME RANGE AS the value of 4 - byte float in C.
@@ -397,7 +427,7 @@ Token aa_func08(char lexeme[]) {
 /*ACCEPTING FUNCTION FOR THE string literal(SL)*/
 
 Token aa_func10(char lexeme[]) {
-	Token t;
+	Token t = { 0 };
 	/*THE FUNCTION MUST STORE THE lexeme PARAMETER CONTENT INTO THE STRING LITERAL TABLE(str_LTBL)
 	FIRST THE ATTRIBUTE FOR THE TOKEN MUST BE SET.
 	THE ATTRIBUTE OF THE STRING TOKEN IS THE OFFSET FROM
@@ -414,7 +444,7 @@ Token aa_func10(char lexeme[]) {
 /*ACCEPTING FUNCTION FOR THE ERROR TOKEN*/
 
 Token aa_func11_12(char lexeme[]) {
-	Token t;
+	Token t = { 0 };
 	/*THE FUNCTION SETS THE ERROR TOKEN. lexeme[] CONTAINS THE ERROR
 	THE ATTRIBUTE OF THE ERROR TOKEN IS THE lexeme CONTENT ITSELF
 	AND IT MUST BE STORED in err_lex. IF THE ERROR lexeme IS LONGER
