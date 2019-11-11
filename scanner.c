@@ -257,8 +257,46 @@ Token malar_next_token(void) {
 				return t;
 			/*Utilize finite state machine*/
 			default:
+				lexstart = b_mark(sc_buf, b_getcoffset(sc_buf) - 1);
+				int i;
+				int lexLength;
 				while (1) {
-				
+					/*Get the new state and chack if it is accepting*/
+					state = get_next_state(state, c);
+					if (as_table[state] == NOAS) {
+						c = b_getc(sc_buf);
+						continue;
+					}
+
+					/*Check if the accepting state has retract*/
+					if (as_table[state] == ASWR) {
+						b_retract(sc_buf);
+					}
+
+					/*Create temporary buffer for the lexeme*/
+					lexend = b_getcoffset(sc_buf);
+					lexLength = lexend - lexstart;
+					char* tempLexBuf = malloc(lexLength + 1);
+					
+					/*Check for runtime error*/
+					if (tempLexBuf == NULL) {
+						b_reset(sc_buf);
+						scerrnum = 1;
+						t.code = RTE_T;
+						sprintf(t.attribute.err_lex, "RUN TIME ERROR: ");
+						return t;
+					}
+
+					/*Insert lexeme into its temporary buffer*/
+					for (i = 0; i < lexLength; i++) {
+						c = b_getc(sc_buf);
+						strcat(tempLexBuf, &c);
+					}
+
+					/*Pass lexeme to accepting state function*/
+					t = aa_table[state](tempLexBuf);
+					free(tempLexBuf);
+					return t;
 				}
 		}
 
