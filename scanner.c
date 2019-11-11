@@ -695,9 +695,9 @@ Function Name:		iskeyword
 Purpose:			keywords lookup function 
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	n/a
+Called functions:	strcmp()
 Parameters:			char* kw_lexeme - keyword
-Return value:		int index of the keyword in the array  
+Return value:		int index of the keyword in the array, if successful  
 					-1, if unsuccessful
 Algorithm:			Check if the input is available
 					Iterate through the keyword array and compare with the input
