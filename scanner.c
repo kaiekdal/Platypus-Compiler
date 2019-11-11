@@ -67,12 +67,7 @@ static pBuffer sc_buf; /*pointer to input source buffer*/
 /* scanner.c static(local) function  prototypes */
 static int char_class(char c); /* character class function */
 static int get_next_state(int, char); /* state machine function */
-<<<<<<< HEAD
 static int iskeyword(char* kw_lexeme); /*keywords lookup function */
-=======
-static int iskeyword(char* kw_lexeme); /*keywords lookup functiuon */
->>>>>>> f8563ce0df9d4447f72212c926a369c05ff08108
-
 
 /*Initializes scanner */
 int scanner_init(pBuffer psc_buf) {
@@ -464,11 +459,9 @@ Algorithm:			Check if the lexeme is a keyword
 *****************************************/
 Token aa_func02(char lexeme[]) {
 	Token t = { 0 };
-	/* variable to hold the index of the keyword, if available */
-	int index;
-	
+
 	/* set a variable to hold the value of whether the input is a keyword */
-	index = iskeyword(lexeme);
+	int index = iskeyword(lexeme);
 
 	/* return a token with the corresponding attribute if the lexeme is a key word */
 	if (index >= 0) {
@@ -543,25 +536,35 @@ Token aa_func03(char lexeme[]) {
 	return t;
 }
 
-/*ACCEPTING FUNCTION FOR THE integer literal(IL) - decimal constant (DIL)*/
-
 /*****************************************
 Function Name:		aa_func05
 Purpose:			accepting function for the integer literal (IL) - decimal constant (DIL)
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	strlen(), strcpy()
+Called functions:	strlen()
 Parameters:			char lexeme[] - character
-Return value:		Token 
-Algorithm:			Set an SVID token
-					Store the first VID_LEN-1 characters in the attribute array
-					Append @ and a null terminator at the end to make it a string
+Return value:		Token - decimal constant (DIL)
+Algorithm:			
 *****************************************/
 Token aa_func05(char lexeme[]) {
 	Token t = { 0 };
 
 	/* convert the decimal constant lexeme to a decimal integer value */
+	long value = atol(lexeme);
 
+	/* return error token lexeme if value out of range as the value of a 2-byte integer */
+	if (value > SHRT_MAX || value < SHRT_MIN) {
+		t.code = ERR_T;
+		
+	}
+	   
+	/* store only the first ERR_LEN-3 characters if error is longer than ERR_LEN */
+
+	/* append ellipses to the err_lex */
+	sprintf(t.attribute.err_lex, "%s...", lexeme);
+
+	/* set the appropriate token code */
+	t.attribute.int_value = value;
 
 	/*THE FUNCTION MUST CONVERT THE LEXEME REPRESENTING A DECIMAL CONSTANT
 	TO A DECIMAL INTEGER VALUE, WHICH IS THE ATTRIBUTE FOR THE TOKEN.
@@ -622,8 +625,6 @@ Token aa_func11_12(char lexeme[]) {
 	BEFORE RETURNING THE FUNCTION MUST SET THE APROPRIATE TOKEN CODE*/
 	return t;
 }
-
-/*HERE YOU WRITE YOUR ADDITIONAL FUNCTIONS (IF ANY). FOR EXAMPLE*/
 
 /*****************************************
 Function Name:		iskeyword
