@@ -433,7 +433,6 @@ Algorithm:			Check if the current char value in the lexeme
 					Return the related column number for the state to be assigned
 *****************************************/
 int char_class(char c) {
-	int val;
 
 	/* return 0 for [a-zA-Z] */
 	if (isalpha(c)) { 
