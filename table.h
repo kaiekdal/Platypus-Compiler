@@ -1,14 +1,26 @@
-/* Filename: table.h
- * Transition Table and function declarations necessary for the scanner implementation
- * as required for CST8152 - Assignment #2.
- * Version: 1.19.2
- * Date: 2 October 2019
- * Provided by: Svillen Ranev
- * The file is incomplete. You are to complete it.
- ***************************************************
- * REPLACE THIS HEADER WITH YOUR HEADER
- ***************************************************
- */
+/************************************************
+Filename:                       table.h
+Compiler:						MS Visual Studio Enterprise 2019
+Version:                        1.0
+Authors:		                Kai Ekdal & Olivier Lauzon
+Student Number:                 040918802 & 040918796
+Course Name/Number:             Compilers CST8152
+Lab Section:					312
+Assignment # :                  2
+Assignment Name:                Building a Lexical Analyzer (Scanner)
+Date:							November 12, 2019
+Submission Date:                November 12, 2019
+Professor:						Svillen Ranev
+List of Source and Header Files:buffer.c, scanner.c, buffer.h, table.h, token.h
+Purpose:						Transition Table and function declarations necessary
+								for the scanner implementation
+Function list:					aa_func02();
+								aa_func03();
+								aa_func05();
+								aa_func08();
+								aa_func10();
+								aa_func11_12();
+*************************************************/
 
 #ifndef  TABLE_H_
 #define  TABLE_H_ 
@@ -32,7 +44,8 @@
    *  !!comment , ',' , ';' , '-' , '+' , '*' , '/', << ,
    *  .AND., .OR. , SEOF,
    */
-   /*Delimiters*/
+
+/*Delimiters*/
 #define LPAR_VAL '('
 #define RPAR_VAL ')'
 #define LBRACE_VAL '{'
