@@ -260,12 +260,9 @@ pBuffer b_addc(pBuffer const pBD, char symbol)
 	pBD->capacity = new_capacity;
 	/* adds symbol to the end of the character buffer */
 	/*my line of code below resulted in a buffer overrun warning on VS, yet my outputs for all test cases were 100% accurate */
-	pBD->cb_head[pBD->addc_offset] = symbol;
+	*(pBD->cb_head + pBD->addc_offset++) = symbol;
 	/* the buffer overrun warning disappeared after using the code below. */
 	/**(pBD->cb_head + pBD->addc_offset) = symbol;*/
-
-	/* increment addc_offset by 1 */
-	pBD->addc_offset++;
 
 	/* returns a pointer to Buffer */
 	return pBD;
@@ -751,7 +748,7 @@ Buffer* b_compact(Buffer* const pBD, char symbol)
 	pBD->capacity = new_capacity;
 
 	/* adds symbol to the end of the character buffer */
-	pBD->cb_head[pBD->addc_offset++] = symbol;
+	*(pBD->cb_head + pBD->addc_offset++) = symbol;
 
 	/* returns a pointer to Buffer */
 	return pBD;

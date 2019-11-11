@@ -67,7 +67,11 @@ static pBuffer sc_buf; /*pointer to input source buffer*/
 /* scanner.c static(local) function  prototypes */
 static int char_class(char c); /* character class function */
 static int get_next_state(int, char); /* state machine function */
+<<<<<<< HEAD
 static int iskeyword(char* kw_lexeme); /*keywords lookup function */
+=======
+static int iskeyword(char* kw_lexeme); /*keywords lookup functiuon */
+>>>>>>> f8563ce0df9d4447f72212c926a369c05ff08108
 
 
 /*Initializes scanner */
@@ -110,9 +114,9 @@ Token malar_next_token(void) {
 
 		/* Part 1: Implementation of token driven scanner. Every token is possessed by its own dedicated code */
 		/* Tokens to be handled in this part
-		*  ['=', ' ', '(', ')', '{', '}', ==, <>, '>', '<', ';', white space, !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF
+		* ['=', ' ', '(', ')', '{', '}', ==, <>, '>', '<', ';', white space,
+		* !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF]
 		*/
-		/*['(', ')', '{', '}', '>', ';', !!comment, ',', '-', '+', '*', '/', SEOF*/
 		switch (c) {
 			/*Whitespace cases*/
 			case NEWLINE_VAL: case CR_VAL:
@@ -156,6 +160,10 @@ Token malar_next_token(void) {
 				t.attribute.rel_op = LT;
 				return t;
 
+			case GREATER_THAN_VAL:
+				t.code = REL_OP_T;
+				t.attribute.rel_op = GT;
+
 			/*Tokens that begin with '!'*/
 			case NOT_VAL:
 				c = b_getc(sc_buf);
@@ -167,25 +175,92 @@ Token malar_next_token(void) {
 					line++;
 					continue;
 				}
+				/*Create error token with '!' plus the cause of error*/
+				t.code = ERR_T;
+				/*sprintf used to ensure that the \0 is inserted into the string*/
+				sprintf(t.attribute.err_lex, "!%c", c);
+				/*In case of error, dump whole line*/
+				while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF && c != EOF_VAL2) {
+					c = b_getc(sc_buf);
+				}
+				b_retract(sc_buf);
+				return t;
 
-
-			case LPAR_VAL:
-			case RPAR_VAL:
-			case LBRACE_VAL:
-			case RBRACE_VAL:
-			case GREATER_THAN_VAL:
-			case SEMI_COLON_VAL:
-			case COMMA_VAL:
-			case MINUS_VAL:
-			case PLUS_VAL:
-			case MULTIPLY_VAL:
-			case DIVIDE_VAL:
-				/*SEOF cases*/
-			case EOF_VAL1:
-			case EOF_VAL2:
-				/*".AND.", ".OR."*/
+			/*".AND.", ".OR."*/
 			case DOT_VAL:
-				/*Utilize finite state machine*/
+				lexstart = b_getcoffset(sc_buf);
+				c = b_getc(sc_buf);
+				if (c == 'A' && b_getc(sc_buf) == 'N' && b_getc(sc_buf) == 'D' && b_getc(sc_buf) == DOT_VAL) {
+					t.code = LOG_OP_T;
+					t.attribute.log_op = AND;
+					return t;
+				}
+				if (c == 'O') {
+					c = b_getc(sc_buf);
+					if (c == 'R') {
+						c = b_getc(sc_buf);
+						if (c == DOT_VAL) {
+							t.code = LOG_OP_T;
+							t.attribute.log_op = OR;
+							return t;
+						}
+
+					}
+				}
+				t.code = ERR_T;
+				sprintf(t.attribute.err_lex, ".");
+				b_mark(sc_buf, lexstart);
+				b_reset(sc_buf);
+				return t;
+
+			/*Delimiter cases*/
+			case LPAR_VAL:
+				t.code = LPR_T;
+				return t;
+			case RPAR_VAL:
+				t.code = RPR_T;
+				return t;
+			case LBRACE_VAL:
+				t.code = LBR_T;
+				return t;
+			case RBRACE_VAL:
+				t.code = RBR_T;
+				return t;
+			case SEMI_COLON_VAL:
+				t.code = EOS_T;
+				return t;
+			case COMMA_VAL:
+				t.code = COM_T;
+				return t;
+
+			/*Arithmetic operator cases*/
+			case MINUS_VAL:
+				t.code = ART_OP_T;
+				t.attribute.arr_op = MINUS;
+				return t;
+			case PLUS_VAL:
+				t.code = ART_OP_T;
+				t.attribute.arr_op = PLUS;
+				return t;
+			case MULTIPLY_VAL:
+				t.code = ART_OP_T;
+				t.attribute.arr_op = MULT;
+				return t;
+			case DIVIDE_VAL:
+				t.code = ART_OP_T;
+				t.attribute.arr_op = DIV;
+				return t;
+
+			/*SEOF cases*/
+			case EOF_VAL1:
+				t.code = SEOF_T;
+				t.attribute.seof = SEOF_0;
+				return t;
+			case EOF_VAL2:
+				t.code = SEOF_T;
+				t.attribute.seof = SEOF_EOF;
+				return t;
+			/*Utilize finite state machine*/
 			default:
 				while (1) {
 				
