@@ -75,13 +75,14 @@ Function list:					aa_func02();
 
 #define ES  11 /* Error state  with no retract */
 #define ER  12 /* Error state  with retract */
-#define IS (-1)    /* Inavalid state */
+#define IS (-1)    /* Invalid state */
 
 /* State transition table definition */
 #define TABLE_COLUMNS 8
 
 /*transition table - type of states defined in separate table */
 int st_table[][TABLE_COLUMNS] = {
+	/*[a-zA-Z], '0', [1-9], '.', '@', '"', 'SEOF', other*/
 	/* State 0 */	{1, 6, 4, ES, ES, 9, ER, ES},
 	/* State 1 */	{1, 1, 1, 2, 3, 2, 2, 2},
 	/* State 2 */	{IS, IS, IS, IS, IS, IS, IS, IS},

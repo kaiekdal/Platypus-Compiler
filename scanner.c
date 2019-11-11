@@ -121,8 +121,10 @@ Token malar_next_token(void) {
 				line++;
 			case SPACE_VAL: case TAB_VAL:
 				continue;
-				/*Other*/
+
+				/*Tokens that begin with '='*/
 			case EQUALS_VAL:
+				lexstart = b_getcoffset(sc_buf);
 			case LPAR_VAL:
 			case RPAR_VAL:
 			case LBRACE_VAL:
@@ -142,9 +144,12 @@ Token malar_next_token(void) {
 			case NULLTERM_VAL:
 				/*".AND.", ".OR."*/
 			case DOT_VAL:
-
 				/*Utilize finite state machine*/
 			default:
+				while (1) {
+				
+				}
+
 			}
 
 			WRITE YOUR CODE FOR PROCESSING THE SPECIAL - CASE TOKENS HERE.
@@ -158,7 +163,7 @@ Token malar_next_token(void) {
 			IF LEXICAL ERROR OR ILLEGAL CHARACTER ARE FOUND THE SCANNER MUST RETURN AN ERROR TOKEN.
 				ILLEGAL CHARACTER IS ONE THAT IS NOT DEFINED IN THE LANGUAGE SPECIFICATION
 				OR IT IS OUT OF CONTEXT.
-				THE ILLEGAL CHAR IS THE ATTRIBUTE OF THE ERROR TOKEN
+				THE  ILLEGAL CHAR IS THE ATTRIBUTE OF THE ERROR TOKEN
 				THE ILLEGAL CHARACTERS ARE PROCESSED BY THE TRANSITION TABLE.
 				SOME OF THE LEXICAL ERRORS ARE ALSO PROCESSED BY THE TRANSITION TABLE.
 
@@ -406,4 +411,6 @@ Token malar_next_token(void) {
 
 			/*HERE YOU WRITE YOUR ADDITIONAL FUNCTIONS (IF ANY). FOR EXAMPLE*/
 
-			int iskeyword(char* kw_lexeme) {}
+			int iskeyword(char* kw_lexeme) {
+				
+			}
