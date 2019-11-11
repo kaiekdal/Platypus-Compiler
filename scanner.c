@@ -583,9 +583,9 @@ Token aa_func05(char lexeme[]) {
 	long value = atol(lexeme);
 
 	/* return error token lexeme if value out of range as the value of a 2-byte integer */
-	if (value > SHRT_MAX || value < SHRT_MIN) {
+	if (value > SHRT_MAX || value < 0) {
 		t.code = ERR_T;
-		
+		return t;
 	}
 	   
 	/* store only the first ERR_LEN-3 characters if error is longer than ERR_LEN */
@@ -691,9 +691,9 @@ Function Name:		iskeyword
 Purpose:			keywords lookup function 
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	n/a
+Called functions:	strcmp()
 Parameters:			char* kw_lexeme - keyword
-Return value:		int index of the keyword in the array  
+Return value:		int index of the keyword in the array, if successful  
 					-1, if unsuccessful
 Algorithm:			Check if the input is available
 					Iterate through the keyword array and compare with the input
