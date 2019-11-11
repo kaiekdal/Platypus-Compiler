@@ -342,6 +342,17 @@ int char_class(char c) {
 ACCEPTING FUNCTION FOR THE arithmentic variable identifier AND keywords (VID - AVID/KW)
 REPLACE XX WITH THE CORRESPONDING ACCEPTING STATE NUMBER*/
 
+/*****************************************
+Function Name:		aa_func02
+Purpose:			
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	isalpha()
+Parameters:			char c - input character
+Return value:		int - column number in the transition table for the input character
+Algorithm:			Check if the current char value in the lexeme
+					Return the related column number for the state to be assigned
+*****************************************/
 Token aa_func02(char lexeme[]) {
 	Token t;
 	/*WHEN CALLED THE FUNCTION MUST
