@@ -67,7 +67,7 @@ static pBuffer sc_buf; /*pointer to input source buffer*/
 /* scanner.c static(local) function  prototypes */
 static int char_class(char c); /* character class function */
 static int get_next_state(int, char); /* state machine function */
-static int iskeyword(char* kw_lexeme); /*keywords lookup functuion */
+static int iskeyword(char* kw_lexeme); /*keywords lookup functiuon */
 
 
 /*Initializes scanner */
@@ -167,7 +167,28 @@ Token malar_next_token(void) {
 					line++;
 					continue;
 				}
+				/*Create error token with '!' plus the cause of error*/
+				t.code = ERR_T;
+				t.attribute.err_lex[0] = '!';
+				t.attribute.err_lex[1] = c;
+				/*In case of error, dump whole line*/
+				while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF && c != EOF_VAL2) {
+					c = b_getc(sc_buf);
+				}
+				b_retract(sc_buf);
+				return t;
 
+			/*".AND.", ".OR."*/
+			case DOT_VAL:
+				c = b_getc(sc_buf);
+				if (c == 'A') {
+
+				}
+				if (c == 'O') {
+					
+				}
+				t.code = ERR_T;
+				t.attribute.err_lex[0] = '.';
 
 			case LPAR_VAL:
 			case RPAR_VAL:
@@ -180,12 +201,10 @@ Token malar_next_token(void) {
 			case PLUS_VAL:
 			case MULTIPLY_VAL:
 			case DIVIDE_VAL:
-				/*SEOF cases*/
+			/*SEOF cases*/
 			case EOF_VAL1:
 			case EOF_VAL2:
-				/*".AND.", ".OR."*/
-			case DOT_VAL:
-				/*Utilize finite state machine*/
+			/*Utilize finite state machine*/
 			default:
 				while (1) {
 				
