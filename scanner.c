@@ -113,43 +113,43 @@ Token malar_next_token(void) {
 		* !!comment, ',', ';', '-', '+', '*', '/', <<, .AND., .OR., SEOF]
 		*/
 		switch (c) {
-			/*Whitespace cases*/
+			/* Whitespace cases */
 			case NEWLINE_VAL: case CR_VAL:
 				line++;
 			case SPACE_VAL: case TAB_VAL:
 				continue;
 
-			/*Tokens that begin with '='*/
+			/* Tokens that begin with '=' */
 			case EQUALS_VAL:
 				c = b_getc(sc_buf);
 
-				/*Case for the "==" lexeme*/
+				/* Case for the "==" lexeme */
 				if (c == EQUALS_VAL) {
 					t.code = REL_OP_T;
 					t.attribute.rel_op = EQ;
 					return t;
 				}
-				/*Case for the "=" lexeme*/
+				/* Case for the "=" lexeme */
 				b_retract(sc_buf);
 				t.code = ASS_OP_T;
 				return t;
 
-			/*Tokens that begin with '<'*/
+			/* Tokens that begin with '<' */
 			case LESS_THAN_VAL:
 				c = b_getc(sc_buf);
 
-				/*Case for the "<<" lexeme*/
+				/* Case for the "<<" lexeme */
 				if (c == LESS_THAN_VAL) {
 					t.code = SCC_OP_T;
 					return t;
 				}
-				/*Case for the "<>" lexeme*/
+				/* Case for the "<>" lexeme */
 				if (c == GREATER_THAN_VAL) {
 					t.code = REL_OP_T;
 					t.attribute.rel_op = NE;
 					return t;
 				}
-				/*Case for the "<" lexeme*/
+				/* Case for the "<" lexeme */
 				b_retract(sc_buf);
 				t.code = REL_OP_T;
 				t.attribute.rel_op = LT;
@@ -159,7 +159,7 @@ Token malar_next_token(void) {
 				t.code = REL_OP_T;
 				t.attribute.rel_op = GT;
 
-			/*Tokens that begin with '!'*/
+			/* Tokens that begin with '!' */
 			case NOT_VAL:
 				c = b_getc(sc_buf);
 
@@ -170,18 +170,18 @@ Token malar_next_token(void) {
 					line++;
 					continue;
 				}
-				/*Create error token with '!' plus the cause of error*/
+				/* Create error token with '!' plus the cause of error */
 				t.code = ERR_T;
-				/*sprintf used to ensure that the \0 is inserted into the string*/
+				/* sprintf used to ensure that the \0 is inserted into the string */
 				sprintf(t.attribute.err_lex, "!%c", c);
-				/*In case of error, dump whole line*/
+				/* In case of error, dump whole line */
 				while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF && c != EOF_VAL2) {
 					c = b_getc(sc_buf);
 				}
 				b_retract(sc_buf);
 				return t;
 
-			/*".AND.", ".OR."*/
+			/* ".AND.", ".OR." */
 			case DOT_VAL:
 				lexstart = b_getcoffset(sc_buf);
 				c = b_getc(sc_buf);
@@ -208,7 +208,7 @@ Token malar_next_token(void) {
 				b_reset(sc_buf);
 				return t;
 
-			/*Delimiter cases*/
+			/* Delimiter cases */
 			case LPAR_VAL:
 				t.code = LPR_T;
 				return t;
@@ -228,7 +228,7 @@ Token malar_next_token(void) {
 				t.code = COM_T;
 				return t;
 
-			/*Arithmetic operator cases*/
+			/* Arithmetic operator cases */
 			case MINUS_VAL:
 				t.code = ART_OP_T;
 				t.attribute.arr_op = MINUS;
@@ -246,7 +246,7 @@ Token malar_next_token(void) {
 				t.attribute.arr_op = DIV;
 				return t;
 
-			/*SEOF cases*/
+			/* SEOF cases */
 			case EOF_VAL1:
 				t.code = SEOF_T;
 				t.attribute.seof = SEOF_0;
@@ -255,30 +255,30 @@ Token malar_next_token(void) {
 				t.code = SEOF_T;
 				t.attribute.seof = SEOF_EOF;
 				return t;
-			/*Utilize finite state machine*/
+			/* Utilize finite state machine */
 			default:
 				lexstart = b_mark(sc_buf, b_getcoffset(sc_buf) - 1);
 				int i;
 				int lexLength;
 				while (1) {
-					/*Get the new state and chack if it is accepting*/
+					/* Get the new state and chack if it is accepting */
 					state = get_next_state(state, c);
 					if (as_table[state] == NOAS) {
 						c = b_getc(sc_buf);
 						continue;
 					}
 
-					/*Check if the accepting state has retract*/
+					/* Check if the accepting state has retract */
 					if (as_table[state] == ASWR) {
 						b_retract(sc_buf);
 					}
 					 
-					/*Create temporary buffer for the lexeme*/
+					/* Create temporary buffer for the lexeme */
 					lexend = b_getcoffset(sc_buf);
 					lexLength = lexend - lexstart;
 					char* tempLexBuf = malloc((size_t)lexLength + 1);
 					
-					/*Check for runtime error*/
+					/* Check for runtime error */
 					if (tempLexBuf == NULL) {
 						b_reset(sc_buf);
 						scerrnum = 1;
@@ -287,13 +287,13 @@ Token malar_next_token(void) {
 						return t;
 					}
 
-					/*Insert lexeme into its temporary buffer*/
+					/* Insert lexeme into its temporary buffer */
 					for (i = 0; i < lexLength; i++) {
 						const char temp = b_getc(sc_buf);
 						strcat(tempLexBuf, &temp);
 					}
 
-					/*Pass lexeme to accepting state function*/
+					/* Pass lexeme to accepting state function */
 					t = aa_table[state](tempLexBuf);
 					free(tempLexBuf);
 					return t;
@@ -486,7 +486,8 @@ Parameters:			char lexeme[] - character
 Return value:		Token - attribute code for the keyword
 Algorithm:			Check if the lexeme is a keyword
 					If yes, return a token with the corresponding attribute 
-					If not, check the length of the lexeme
+					If not, set an AVID token
+					Check the length of the lexeme and if it is longer than VID_LEN
 					Store only the first VID_LEN characters if length of lexeme is longer
 					Add a null terminator at the end to make it a string
 *****************************************/
@@ -574,7 +575,9 @@ History/Versions:	1.0
 Called functions:	strlen()
 Parameters:			char lexeme[] - character
 Return value:		Token - decimal constant (DIL)
-Algorithm:			
+Algorithm:			Convert the decimal constant lexeme to a decimal integer value
+					Check the range of the value is within the range of a short integer
+					
 *****************************************/
 Token aa_func05(char lexeme[]) {
 	Token t = { 0 };
@@ -677,7 +680,21 @@ Token aa_func11_12(char lexeme[]) {
 	/* set the error token */
 	t.code = ERR_T;
 
+	/* store only the first ERR_LEN-3 characters if error is longer
+	than ERR_LEN and append ellipses to the err_lex */
+	if (strlen(lexeme) > ERR_LEN) {
+		sprintf(t.attribute.err_lex, "%.17s...", lexeme);
+		return t;
+	}
 
+	sprintf(t.attribute.err_lex, "%s", lexeme);
+
+	/* increment line counter if the error lexeme contains line terminators */
+	if (t.attribute.err_lex[ERR_LEN] == EOF_VAL1) {
+		line++;
+	}
+
+    /* set the appropriate token code */
 
 	/*THE FUNCTION SETS THE ERROR TOKEN. lexeme[] CONTAINS THE ERROR
 	THE ATTRIBUTE OF THE ERROR TOKEN IS THE lexeme CONTENT ITSELF
