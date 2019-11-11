@@ -23,6 +23,7 @@ Function list:					scanner_init();
 								aa_func08();
 								aa_func10();
 								aa_func11_12();
+								iskeyword();
 *************************************************/
 
 
@@ -81,6 +82,25 @@ int scanner_init(pBuffer psc_buf) {
 /*   scerrnum = 0;  *//*no need - global ANSI C */
 }
 
+/*****************************************
+Function Name:		b_allocate
+Purpose:			creates a new buffer in memory
+Author:				Kai Ekdal
+History/Versions:	1.0
+Called functions:	calloc(), malloc(), sizeof(), free()
+Parameters:  		short init_capacity - initial capacity
+					char inc_factor - increment factor
+					char o_mode - operational mode
+Return value:		pointer to the buffer
+					null, if unsuccessful
+Algorithm:			Allocate memory for the buffer structure
+					Check if the buffer is valid
+					Check the validity of the initial capacity of the buffer
+					Allocate memory for the character buffer
+					Check the mode
+					Assign values depending on mode
+					Return a pointer to the buffer structure
+*****************************************/
 Token malar_next_token(void) {
 	{
 		Token t = { 0 }; /* token to return after pattern recognition. Set all structure members to 0 */
