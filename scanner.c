@@ -289,8 +289,8 @@ Token malar_next_token(void) {
 
 					/*Insert lexeme into its temporary buffer*/
 					for (i = 0; i < lexLength; i++) {
-						c = b_getc(sc_buf);
-						strcat(tempLexBuf, &c);
+						const char temp = b_getc(sc_buf);
+						strcat(tempLexBuf, &temp);
 					}
 
 					/*Pass lexeme to accepting state function*/
@@ -621,7 +621,6 @@ Algorithm:
 *****************************************/
 Token aa_func08(char lexeme[]) {
 	Token t = { 0 };
-	lexeme[2] = 'g';
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
 	WHICH IS THE ATTRIBUTE FOR THE TOKEN.
 	THE VALUE MUST BE IN THE SAME RANGE AS the value of 4 - byte float in C.
