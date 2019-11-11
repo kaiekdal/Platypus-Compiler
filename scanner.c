@@ -678,11 +678,24 @@ Algorithm:
 *****************************************/
 Token aa_func10(char lexeme[]) {
 	Token t = { 0 };
+	unsigned int i = 0;
 
-	/* set the attribute for the token */
+	t.attribute.str_offset = b_limit(str_LTBL);
 
-	
+	for (i = 1; i < strlen(lexeme); i++) {
+		if (lexeme[i] == QUOTE_VAL) {
+			break;
+		}
+		if (lexeme[i] == NEWLINE_VAL || lexeme[i] == CR_VAL) {
+			line++;
+		}
+		b_addc(str_LTBL, lexeme[i]);
+		/*Check for null*/
+	}
 
+	b_addc(str_LTBL, NULLTERM_VAL);
+	t.code = STR_T;
+	return t;
 	/*THE FUNCTION MUST STORE THE lexeme PARAMETER CONTENT INTO THE STRING LITERAL TABLE(str_LTBL)
 	FIRST THE ATTRIBUTE FOR THE TOKEN MUST BE SET.
 	THE ATTRIBUTE OF THE STRING TOKEN IS THE OFFSET FROM
