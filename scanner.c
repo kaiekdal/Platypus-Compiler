@@ -86,7 +86,8 @@ Function Name:		malar_next_token
 Purpose:			performs token recognition 
 Authors:			Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
-Called functions:	b_getc(), malloc(), sizeof(), free()
+Called functions:	b_getc(), b_retract(), sprintf(), b_getcoffset(), b_mark(), b_reset(), 
+					strcat(), get_next_state(), malloc(), sizeof(), free()
 Parameters:  		short init_capacity - initial capacity
 					char inc_factor - increment factor
 					char o_mode - operational mode
@@ -574,11 +575,12 @@ Function Name:		aa_func05
 Purpose:			accepting function for the integer literal (IL) - decimal constant (DIL)
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	strlen(), atol()
+Called functions:	atol(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
 Return value:		Token - decimal constant (DIL)
 Algorithm:			Convert the decimal constant lexeme to a decimal integer value
-					Check the range of the value is within the range of a short integer				
+					Check the range of the value is within the range of a short integer	
+					Set the appropriate token code and attribute
 *****************************************/
 Token aa_func05(char lexeme[]) {
 	Token t = { 0 };
@@ -630,7 +632,10 @@ History/Versions:	1.0
 Called functions:	atof(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
 Return value:		Token - floating point literal (FPL)
-Algorithm:			
+					Error token, if unsuccessful
+Algorithm:			Convert the lexeme to a floating point value
+					Check that the value range is the same range as a 4 byte float
+					Set appropriate token code
 *****************************************/
 Token aa_func08(char lexeme[]) {
 	Token t = { 0 };
@@ -670,10 +675,14 @@ Function Name:		aa_func10
 Purpose:			accepting function for the string literal (SL)
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:
+Called functions:	b_limit(), strlen(), b_addc()
 Parameters:			char lexeme[] - character
 Return value:		Token - string literal (SL)
-Algorithm:
+Algorithm:			Set the token attribute
+					Copy the lexeme content into the string literal table
+					Add a null terminator
+					Increment line counter if the string contains line terminators
+					Set the string token code
 *****************************************/
 Token aa_func10(char lexeme[]) {
 	Token t = { 0 };
@@ -713,10 +722,13 @@ Function Name:		aa_func11_12
 Purpose:			accepting function for the error token
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:
+Called functions:	strlen(), sprintf(), 
 Parameters:			char lexeme[] - character
 Return value:		Token
-Algorithm:
+Algorithm:			Sets the error token
+					Add an ellipses if the error lexeme is longer than ERR_LEN
+					Set the appropriate token code
+					Return token
 *****************************************/
 Token aa_func11_12(char lexeme[]) {
 	Token t = { 0 };
@@ -737,8 +749,6 @@ Token aa_func11_12(char lexeme[]) {
 	if (t.attribute.err_lex[ERR_LEN] == EOF_VAL1) {
 		line++;
 	}
-
-    /* set the appropriate token code */
 
 	/*THE FUNCTION SETS THE ERROR TOKEN. lexeme[] CONTAINS THE ERROR
 	THE ATTRIBUTE OF THE ERROR TOKEN IS THE lexeme CONTENT ITSELF
