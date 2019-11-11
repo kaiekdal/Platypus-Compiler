@@ -288,7 +288,7 @@ Purpose:			returns the column index in the transition table
 					that represents a character or character class					
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	n/a
+Called functions:	isalpha()
 Parameters:			char c - input character
 Return value:		int - column number in the transition table for the input character
 Algorithm:			Check if the current char value in the lexeme
@@ -298,7 +298,7 @@ int char_class(char c) {
 	int val;
 
 	/* return 0 for [a-zA-Z] */
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) { 
+	if (isalpha(c)) { 
 		return 0; 
 	}
 
