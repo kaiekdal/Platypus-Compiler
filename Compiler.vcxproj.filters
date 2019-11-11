@@ -21,6 +21,9 @@
     <ClCompile Include="scanner.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="platy_st.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buffer.h">
