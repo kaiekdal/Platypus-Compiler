@@ -280,7 +280,18 @@ Token malar_next_token(void) {
 	}/*end while(1)*/
 }/*end of malar_next_token*/
 
+/*****************************************
+Function Name:		get_next_state
+Purpose:			returns the next state
+Author:				Sv. Ranev
+History/Versions:	1.0
+Called functions:	n/a
+Parameters:			char c - input character
+Return value:		int - next state 
+Algorithm:
+*****************************************/
 int get_next_state(int state, char c) {
+
 	int col;
 	int next;
 	col = char_class(c);
@@ -307,16 +318,17 @@ Purpose:			returns the column index in the transition table
 					that represents a character or character class					
 Author:				Kai Ekdal
 History/Versions:	1.0
-Called functions:	n/a
+Called functions:	isalpha()
 Parameters:			char c - input character
-Return value:		column number in the transition table for the input character
-Algorithm:			
+Return value:		int - column number in the transition table for the input character
+Algorithm:			Check if the current char value in the lexeme
+					Return the related column number for the state to be assigned
 *****************************************/
 int char_class(char c) {
 	int val;
 
 	/* return 0 for [a-zA-Z] */
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) { 
+	if (isalpha(c)) { 
 		return 0; 
 	}
 
@@ -325,7 +337,7 @@ int char_class(char c) {
 		return 1; 
 	}
 
-	/* return 2 for [1-9]*/
+	/* return 2 for [1-9] */
 	if (c >= '1' && c <= '9') {
 		return 2;
 	}
