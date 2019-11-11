@@ -681,7 +681,7 @@ Token aa_func10(char lexeme[]) {
 	unsigned int i = 0;
 
 	t.attribute.str_offset = b_limit(str_LTBL);
-
+	b_mark(sc_buf, b_getcoffset(sc_buf));
 	for (i = 1; i < strlen(lexeme); i++) {
 		if (lexeme[i] == QUOTE_VAL) {
 			break;
@@ -689,13 +689,27 @@ Token aa_func10(char lexeme[]) {
 		if (lexeme[i] == NEWLINE_VAL || lexeme[i] == CR_VAL) {
 			line++;
 		}
-		b_addc(str_LTBL, lexeme[i]);
-		/*Check for null*/
+		
+		/*Add char and check for null*/
+		if (b_addc(str_LTBL, lexeme[i]) == NULL) {
+			b_reset(sc_buf);
+			scerrnum = 1;
+			t.code = RTE_T;
+			sprintf(t.attribute.err_lex, "RUN TIME ERROR: ");
+			return t;
+		}
 	}
 
-	b_addc(str_LTBL, NULLTERM_VAL);
+	/*Add null terminator and check for null*/
+	if (b_addc(str_LTBL, NULLTERM_VAL) == NULL) {
+		b_reset(sc_buf);
+		scerrnum = 1;
+		t.code = RTE_T;
+		sprintf(t.attribute.err_lex, "RUN TIME ERROR: ");
+		return t;
+	}
+	
 	t.code = STR_T;
-	return t;
 	/*THE FUNCTION MUST STORE THE lexeme PARAMETER CONTENT INTO THE STRING LITERAL TABLE(str_LTBL)
 	FIRST THE ATTRIBUTE FOR THE TOKEN MUST BE SET.
 	THE ATTRIBUTE OF THE STRING TOKEN IS THE OFFSET FROM
