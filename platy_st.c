@@ -43,7 +43,7 @@ int scerrnum;     /* run-time error number = 0 by default (ANSI) */
 
 /*external objects */
 extern int line; /* source code line numbers - defined in scanner.c */
-extern int scanner_init(Buffer * sc_buf);
+extern int scanner_init(pBuffer psc_buf);
 extern Token malar_next_token(void);
 /*function declarations */
 void err_printf(char *fmt, ...);
