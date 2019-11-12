@@ -88,11 +88,9 @@ Authors:			Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	b_getc(), b_retract(), sprintf(), b_getcoffset(), b_mark(), b_reset(), 
 					strcat(), get_next_state(), malloc(), sizeof(), b_free()
-Parameters:  		short init_capacity - initial capacity
-					char inc_factor - increment factor
-					char o_mode - operational mode
-Return value:		Token
-					null, if unsuccessful
+Parameters:  		void
+Return value:		Token, if successful
+					Error token, if unsuccessful
 Algorithm:			Read the lexeme from the input buffer, character by character
 					Return a token structure when a token pattern matching the lexeme is found
 					Ignore whitespace, comments, all symbols of the comment, including terminator			
