@@ -59,15 +59,18 @@ Function list:					aa_func02();
 #define EOF_VAL2 '0xFF'
 #define NULLTERM_VAL '\0'
 #define AT_VAL '@'
+
 /*Assignment and comparison operators*/
 #define EQUALS_VAL '='
 #define LESS_THAN_VAL '<'
 #define GREATER_THAN_VAL '>'
+
 /*Arithmetic operators*/
 #define MINUS_VAL '-'
 #define PLUS_VAL '+'
 #define MULTIPLY_VAL '*'
 #define DIVIDE_VAL '/'
+
 /*Whitespace*/
 #define SPACE_VAL ' '
 #define NEWLINE_VAL '\n'
