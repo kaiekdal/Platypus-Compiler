@@ -43,7 +43,7 @@ int scerrnum;     /* run-time error number = 0 by default (ANSI) */
 
 /*external objects */
 extern int line; /* source code line numbers - defined in scanner.c */
-extern int scanner_init(pBuffer psc_buf);
+extern int scanner_init(Buffer * sc_buf);
 extern Token malar_next_token(void);
 /*function declarations */
 void err_printf(char *fmt, ...);
@@ -80,6 +80,7 @@ int main(int argc, char ** argv){
        err_printf("%s%s%s","Usage: ", "scanner", "  source_file_name");
        exit(1);
 	}	
+ 
 
  /* create a source code input buffer - multiplicative mode */	
 	sc_buf = b_allocate(INIT_CAPACITY,INC_FACTOR,'m');
@@ -132,7 +133,7 @@ int main(int argc, char ** argv){
 	printf("Token\t\tAttribute\n");
 	printf("----------------------------------\n");
 	do{	
-	  t= malar_next_token();
+	  t= malar_next_token();  
 	  print_token(t);
 	}while(t.code != SEOF_T);
 /*print String Literal Table if not empty*/
@@ -140,7 +141,7 @@ int main(int argc, char ** argv){
 	b_free(sc_buf);
 	b_free(str_LTBL);
 	sc_buf = str_LTBL = NULL;
-
+ 
   return (0);
 }
 
