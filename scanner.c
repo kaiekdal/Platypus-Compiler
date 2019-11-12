@@ -418,7 +418,7 @@ Author:				Kai Ekdal
 History/Versions:	1.0
 Called functions:	iskeyword(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
-Return value:		Token - attribute code for the keyword
+Return value:		Token
 Algorithm:			Check if the lexeme is a keyword
 					If yes, return a token with the corresponding attribute 
 					If not, set an AVID token
@@ -462,7 +462,8 @@ Author:				Kai Ekdal
 History/Versions:	1.0
 Called functions:	strlen(), sprintf()
 Parameters:			char lexeme[] - character
-Return value:		Token - string literal
+Return value:		Token - string variable identifier
+					Error token, if unsuccessful
 Algorithm:			Set an SVID token
 					Store the first VID_LEN-1 characters in the attribute array
 					Append @ and a null terminator at the end to make it a string
@@ -492,7 +493,8 @@ Author:				Olivier Lauzon
 History/Versions:	1.0
 Called functions:	atol(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
-Return value:		Token - decimal constant (DIL)
+Return value:		Token - integer literal
+					Error token, if unsuccessful
 Algorithm:			Convert the decimal constant lexeme to a decimal integer value
 					Check if the value is within the range of a short integer	
 					Set the appropriate token code and attribute
@@ -576,6 +578,7 @@ History/Versions:	1.0
 Called functions:	b_limit(), strlen(), b_addc()
 Parameters:			char lexeme[] - character
 Return value:		Token - string literal (SL)
+					Error token, if unsuccessful
 Algorithm:			Set the token attribute
 					Copy the lexeme content into the string literal table
 					Add a null terminator
@@ -632,7 +635,7 @@ Author:				Kai Ekdal
 History/Versions:	1.0
 Called functions:	strlen(), sprintf(), 
 Parameters:			char lexeme[] - character
-Return value:		Token
+Return value:		Error token
 Algorithm:			Sets the error token
 					Add an ellipses if the error lexeme is longer than ERR_LEN
 					Set the appropriate token code
@@ -668,7 +671,7 @@ Purpose:			keywords lookup function
 Author:				Kai Ekdal
 History/Versions:	1.0
 Called functions:	strcmp()
-Parameters:			char* kw_lexeme - keyword
+Parameters:			char* kw_lexeme - lexeme
 Return value:		int index of the keyword in the array, if successful  
 					-1, if unsuccessful
 Algorithm:			Check if the input is available
