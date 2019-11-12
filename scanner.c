@@ -278,10 +278,11 @@ Token malar_next_token(void) {
 					/* Create temporary buffer for the lexeme */
 					lexend = b_getcoffset(sc_buf);
 					lexLength = lexend - lexstart;
-					char* tempLexBuf = malloc((size_t)lexLength + 1);
-					
+					lex_buf = b_allocate((short)lexLength + 1, 15, 'a');
+					b_reset(sc_buf);
+
 					/* Check for runtime error */
-					if (tempLexBuf == NULL) {
+					if (lex_buf == NULL) {
 						b_reset(sc_buf);
 						scerrnum = 1;
 						t.code = RTE_T;
@@ -291,13 +292,12 @@ Token malar_next_token(void) {
 
 					/* Insert lexeme into its temporary buffer */
 					for (i = 0; i < lexLength; i++) {
-						const char temp = b_getc(sc_buf);
-						strcat(tempLexBuf, &temp);
+						b_addc(lex_buf, b_getc(sc_buf));
 					}
 
 					/* Pass lexeme to accepting state function */
-					t = aa_table[state](tempLexBuf);
-					free(tempLexBuf);
+					t = aa_table[state](b_location(lex_buf));
+					b_free(lex_buf);
 					return t;
 				}
 		}

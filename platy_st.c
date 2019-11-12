@@ -133,7 +133,8 @@ int main(int argc, char ** argv){
 	printf("Token\t\tAttribute\n");
 	printf("----------------------------------\n");
 	do{	
-	  t= malar_next_token();  
+	  t= malar_next_token();
+	  printf("%d", t.code);
 	  print_token(t);
 	}while(t.code != SEOF_T);
 /*print String Literal Table if not empty*/
@@ -141,7 +142,7 @@ int main(int argc, char ** argv){
 	b_free(sc_buf);
 	b_free(str_LTBL);
 	sc_buf = str_LTBL = NULL;
- 
+
   return (0);
 }
 
