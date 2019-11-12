@@ -80,7 +80,6 @@ int main(int argc, char ** argv){
        err_printf("%s%s%s","Usage: ", "scanner", "  source_file_name");
        exit(1);
 	}	
- 
 
  /* create a source code input buffer - multiplicative mode */	
 	sc_buf = b_allocate(INIT_CAPACITY,INC_FACTOR,'m');
@@ -134,7 +133,6 @@ int main(int argc, char ** argv){
 	printf("----------------------------------\n");
 	do{	
 	  t= malar_next_token();
-	  printf("%d", t.code);
 	  print_token(t);
 	}while(t.code != SEOF_T);
 /*print String Literal Table if not empty*/

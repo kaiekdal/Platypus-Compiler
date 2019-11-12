@@ -294,6 +294,7 @@ Token malar_next_token(void) {
 					for (i = 0; i < lexLength; i++) {
 						b_addc(lex_buf, b_getc(sc_buf));
 					}
+					b_addc(lex_buf, NULLTERM_VAL);
 
 					/* Pass lexeme to accepting state function */
 					t = aa_table[state](b_location(lex_buf));
@@ -390,6 +391,7 @@ Token malar_next_token(void) {
 	}/*end while(1)*/
 }/*end of malar_next_token*/
 
+//#define DEBUG
 /*****************************************
 Function Name:		get_next_state
 Purpose:			returns the next state
