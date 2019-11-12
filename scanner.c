@@ -168,7 +168,7 @@ Token malar_next_token(void) {
 				c = b_getc(sc_buf);
 
 				if (c == NOT_VAL) {
-					while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF && c != EOF_VAL2) {
+					while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF_VAL2) {
 						c = b_getc(sc_buf);
 					}
 					line++;
@@ -293,9 +293,21 @@ Token malar_next_token(void) {
 
 					/* Insert lexeme into its temporary buffer */
 					for (i = 0; i < lexLength; i++) {
-						b_addc(lex_buf, b_getc(sc_buf));
+						if (b_addc(lex_buf, b_getc(sc_buf)) == NULL) {
+							b_reset(sc_buf);
+							scerrnum = 1;
+							t.code = RTE_T;
+							sprintf(t.attribute.err_lex, "RUN TIME ERROR: ");
+							return t;
+						}
 					}
-					b_addc(lex_buf, NULLTERM_VAL);
+					if (b_addc(lex_buf, NULLTERM_VAL) == NULL) {
+						b_reset(sc_buf);
+						scerrnum = 1;
+						t.code = RTE_T;
+						sprintf(t.attribute.err_lex, "RUN TIME ERROR: ");
+						return t;
+					}
 
 					/* Pass lexeme to accepting state function */
 					t = aa_table[state](b_location(lex_buf));
