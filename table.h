@@ -120,6 +120,7 @@ int as_table[] = {
 };
 
 /* Accepting action function declarations */
+/* Note: the parameter type was changed to match the function given in scanner.c */
 Token aa_func02(char lexeme[]);
 Token aa_func03(char lexeme[]);
 Token aa_func05(char lexeme[]);
