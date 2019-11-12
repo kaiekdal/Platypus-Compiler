@@ -161,6 +161,7 @@ Token malar_next_token(void) {
 			case GREATER_THAN_VAL:
 				t.code = REL_OP_T;
 				t.attribute.rel_op = GT;
+				return t;
 
 			/* Tokens that begin with '!' */
 			case NOT_VAL:
@@ -561,7 +562,7 @@ Token aa_func03(char lexeme[]) {
 		return t;
 	}
 
-	sprintf(t.attribute.vid_lex, "%s@", lexeme);
+	sprintf(t.attribute.vid_lex, "%s", lexeme);
 	/*WHEN CALLED THE FUNCTION MUST
 	1. SET a SVID TOKEN.
 		IF THE lexeme IS LONGER than VID_LEN characters,
@@ -644,19 +645,22 @@ Token aa_func08(char lexeme[]) {
 
 	double value = atof(lexeme);
 
-	if (value > FLT_MAX || value < FLT_MIN) {
-		t.code = ERR_T;
-		/* store only the first ERR_LEN-3 characters if error is longer
-		than ERR_LEN and append ellipses to the err_lex */
-		if (strlen(lexeme) > ERR_LEN) {
-			sprintf(t.attribute.err_lex, "%.17s...", lexeme);
-			return t;
-		}
-
-		sprintf(t.attribute.err_lex, "%s", lexeme);
+	if ((value <= FLT_MAX && value >= FLT_MIN) || value == 0.0) {
+		t.code = FPL_T;
+		t.attribute.flt_value = (float)value;
 
 		return t;
 	}
+	t.code = ERR_T;
+	/* store only the first ERR_LEN-3 characters if error is longer
+	than ERR_LEN and append ellipses to the err_lex */
+	if (strlen(lexeme) > ERR_LEN) {
+		sprintf(t.attribute.err_lex, "%.17s...", lexeme);
+		return t;
+	}
+
+	sprintf(t.attribute.err_lex, "%s", lexeme);
+	
 	/*THE FUNCTION MUST CONVERT THE LEXEME TO A FLOATING POINT VALUE,
 	WHICH IS THE ATTRIBUTE FOR THE TOKEN.
 	THE VALUE MUST BE IN THE SAME RANGE AS the value of 4 - byte float in C.
@@ -666,9 +670,6 @@ Token aa_func08(char lexeme[]) {
 	STORED IN err_lex.THEN THREE DOTS ... ARE ADDED TO THE END OF THE
 	err_lex C - type string.
 	BEFORE RETURNING THE FUNCTION MUST SET THE APROPRIATE TOKEN CODE*/
-	t.code = FPL_T;
-	t.attribute.flt_value = (float)value;
-
 	return t;
 }
 
