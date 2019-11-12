@@ -157,7 +157,8 @@ Token malar_next_token(void) {
 				t.code = REL_OP_T;
 				t.attribute.rel_op = LT;
 				return t;
-			/* case for the ">" lexeme */
+
+			/* Case for the ">" lexeme */
 			case GREATER_THAN_VAL:
 				t.code = REL_OP_T;
 				t.attribute.rel_op = GT;
@@ -167,6 +168,7 @@ Token malar_next_token(void) {
 			case NOT_VAL:
 				c = b_getc(sc_buf);
 
+				/* Dump the rest of the line if a comment is appropriately declared*/
 				if (c == NOT_VAL) {
 					while (c != NEWLINE_VAL && c != CR_VAL && c != EOF_VAL1 && c != EOF_VAL2) {
 						c = b_getc(sc_buf);
@@ -174,6 +176,7 @@ Token malar_next_token(void) {
 					line++;
 					continue;
 				}
+
 				/* Create error token with '!' plus the cause of error */
 				t.code = ERR_T;
 				/* sprintf used to ensure that the \0 is inserted into the string */
@@ -185,21 +188,25 @@ Token malar_next_token(void) {
 				b_retract(sc_buf);
 				return t;
 
-			/* ".AND.", ".OR." */
+			/* Tokens that begin with '.' */
 			case DOT_VAL:
 				lexstart = b_getcoffset(sc_buf);
 				c = b_getc(sc_buf);
+
+				/* Case for the ".AND." lexeme */
 				if (c == 'A' && b_getc(sc_buf) == 'N' && b_getc(sc_buf) == 'D' && b_getc(sc_buf) == DOT_VAL) {
 					t.code = LOG_OP_T;
 					t.attribute.log_op = AND;
 					return t;
 				}
+				/* Case for the ".OR." lexeme */
 				if (c == 'O' && b_getc(sc_buf) == 'R' && b_getc(sc_buf) == DOT_VAL) {
 					t.code = LOG_OP_T;
 					t.attribute.log_op = OR;
 					return t;
 				}
 
+				/* Generate error token if neither leveme is found */
 				t.code = ERR_T;
 				sprintf(t.attribute.err_lex, ".");
 				b_mark(sc_buf, lexstart);
@@ -260,7 +267,7 @@ Token malar_next_token(void) {
 				int i;
 				int lexLength;
 				while (1) {
-					/* Get the new state and chack if it is accepting */
+					/* Get the new state and check if it is accepting */
 					state = get_next_state(state, c);
 					if (as_table[state] == NOAS) {
 						c = b_getc(sc_buf);
@@ -289,6 +296,7 @@ Token malar_next_token(void) {
 
 					/* Insert lexeme into its temporary buffer */
 					for (i = 0; i < lexLength; i++) {
+						/* Check for runtime error */
 						if (b_addc(lex_buf, b_getc(sc_buf)) == NULL) {
 							b_reset(sc_buf);
 							scerrnum = 1;
@@ -297,6 +305,7 @@ Token malar_next_token(void) {
 							return t;
 						}
 					}
+					/* Check for runtime error */
 					if (b_addc(lex_buf, NULLTERM_VAL) == NULL) {
 						b_reset(sc_buf);
 						scerrnum = 1;
@@ -506,6 +515,7 @@ Algorithm:			Check if the lexeme is a keyword
 					Add a null terminator at the end to make it a string
 *****************************************/
 Token aa_func02(char lexeme[]) {
+
 	Token t = { 0 };
 
 	/* set a variable to hold the value of whether the input is a keyword */
@@ -558,6 +568,7 @@ Algorithm:			Set an SVID token
 					Append @ and a null terminator at the end to make it a string
 *****************************************/
 Token aa_func03(char lexeme[]) {
+
 	Token t = { 0 };
 
 	/* set the SVID token */
@@ -594,6 +605,7 @@ Algorithm:			Convert the decimal constant lexeme to a decimal integer value
 					Set the appropriate token code and attribute
 *****************************************/
 Token aa_func05(char lexeme[]) {
+
 	Token t = { 0 };
 
 	/* convert the decimal constant lexeme to a decimal integer value */
@@ -617,7 +629,6 @@ Token aa_func05(char lexeme[]) {
 		sprintf(lexeme, "%.5s", lexeme);
 		value = atol(lexeme);
 	}
-	/*Logic for int with more than 5 digits*/
 
 	/* set the appropriate token code and attribute */
 	t.code = INL_T;
@@ -649,6 +660,7 @@ Algorithm:			Convert the lexeme to a floating point value
 					Set appropriate token code
 *****************************************/
 Token aa_func08(char lexeme[]) {
+
 	Token t = { 0 };
 
 	double value = atof(lexeme);
@@ -696,15 +708,21 @@ Algorithm:			Set the token attribute
 					Set the string token code
 *****************************************/
 Token aa_func10(char lexeme[]) {
+
 	Token t = { 0 };
 	unsigned int i = 0;
 
+	/* Set offset atribute of the SL token */
 	t.attribute.str_offset = b_limit(str_LTBL);
 	b_mark(sc_buf, b_getcoffset(sc_buf));
+
+	/* Loop to add all the characters of the lexeme into the SL table */
 	for (i = 1; i < strlen(lexeme); i++) {
+		/* Check for end of string in lexeme */
 		if (lexeme[i] == QUOTE_VAL) {
 			break;
 		}
+		/* Check if SL contains a new line */
 		if (lexeme[i] == NEWLINE_VAL || lexeme[i] == CR_VAL) {
 			line++;
 		}
@@ -756,6 +774,7 @@ Algorithm:			Sets the error token
 					Return token
 *****************************************/
 Token aa_func11_12(char lexeme[]) {
+
 	Token t = { 0 };
 
 	/* set the error token */
