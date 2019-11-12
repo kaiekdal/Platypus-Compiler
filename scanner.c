@@ -194,17 +194,12 @@ Token malar_next_token(void) {
 					t.attribute.log_op = AND;
 					return t;
 				}
-				if (c == 'O') {
-					c = b_getc(sc_buf);
-					if (c == 'R') {
-						c = b_getc(sc_buf);
-						if (c == DOT_VAL) {
-							t.code = LOG_OP_T;
-							t.attribute.log_op = OR;
-							return t;
-						}
-					}
+				if (c == 'O' && b_getc(sc_buf) == 'R' && b_getc(sc_buf) == DOT_VAL) {
+					t.code = LOG_OP_T;
+					t.attribute.log_op = OR;
+					return t;
 				}
+
 				t.code = ERR_T;
 				sprintf(t.attribute.err_lex, ".");
 				b_mark(sc_buf, lexstart);
@@ -258,6 +253,7 @@ Token malar_next_token(void) {
 				t.code = SEOF_T;
 				t.attribute.seof = SEOF_EOF;
 				return t;
+
 			/* Utilize finite state machine */
 			default:
 				lexstart = b_mark(sc_buf, b_getcoffset(sc_buf) - 1);
