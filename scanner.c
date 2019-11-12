@@ -87,7 +87,7 @@ Purpose:			performs token recognition
 Authors:			Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	b_getc(), b_retract(), sprintf(), b_getcoffset(), b_mark(), b_reset(), 
-					strcat(), get_next_state(), malloc(), sizeof(), free()
+					strcat(), get_next_state(), malloc(), sizeof(), b_free()
 Parameters:  		short init_capacity - initial capacity
 					char inc_factor - increment factor
 					char o_mode - operational mode
@@ -157,7 +157,7 @@ Token malar_next_token(void) {
 				t.code = REL_OP_T;
 				t.attribute.rel_op = LT;
 				return t;
-
+			/* case for the ">" lexeme */
 			case GREATER_THAN_VAL:
 				t.code = REL_OP_T;
 				t.attribute.rel_op = GT;
@@ -438,7 +438,7 @@ int get_next_state(int state, char c) {
 Function Name:		char_class
 Purpose:			returns the column index in the transition table 
 					that represents a character or character class					
-Author:				Kai Ekdal
+Author:				Olivier Lauzon
 History/Versions:	1.0
 Called functions:	isalpha()
 Parameters:			char c - input character
@@ -584,7 +584,7 @@ Token aa_func03(char lexeme[]) {
 /*****************************************
 Function Name:		aa_func05
 Purpose:			accepting function for the integer literal (IL) - decimal constant (DIL)
-Author:				Kai Ekdal
+Author:				Olivier Lauzon
 History/Versions:	1.0
 Called functions:	atol(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
@@ -638,7 +638,7 @@ Token aa_func05(char lexeme[]) {
 /*****************************************
 Function Name:		aa_func08
 Purpose:			accepting function for the floating - point literal (FPL)
-Author:				Kai Ekdal
+Author:				Olivier Lauzon
 History/Versions:	1.0
 Called functions:	atof(), strlen(), sprintf()
 Parameters:			char lexeme[] - character
@@ -684,7 +684,7 @@ Token aa_func08(char lexeme[]) {
 /*****************************************
 Function Name:		aa_func10
 Purpose:			accepting function for the string literal (SL)
-Author:				Kai Ekdal
+Author:				Olivier Lauzon
 History/Versions:	1.0
 Called functions:	b_limit(), strlen(), b_addc()
 Parameters:			char lexeme[] - character
@@ -767,7 +767,7 @@ Token aa_func11_12(char lexeme[]) {
 		sprintf(t.attribute.err_lex, "%.17s...", lexeme);
 		return t;
 	}
-
+	/* sprintf used to ensure that the \0 is inserted */
 	sprintf(t.attribute.err_lex, "%s", lexeme);
 
 	/* increment line counter if the error lexeme contains line terminators */
