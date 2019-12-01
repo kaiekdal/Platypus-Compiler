@@ -24,6 +24,9 @@
     <ClCompile Include="platy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="parser.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buffer.h">
@@ -33,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="token.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
