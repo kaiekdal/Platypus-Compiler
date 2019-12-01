@@ -129,7 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="buffer.c" />
-    <ClCompile Include="platy_st.c" />
+    <ClCompile Include="platy.c" />
     <ClCompile Include="scanner.c" />
   </ItemGroup>
   <ItemGroup>
