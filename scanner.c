@@ -96,7 +96,7 @@ Algorithm:			Read the lexeme from the input buffer, character by character
 					Ignore whitespace, comments, all symbols of the comment, including terminator			
 *****************************************/
 Token malar_next_token(void) {
-
+	
 	Token t = { 0 }; /* token to return after pattern recognition. Set all structure members to 0 */
 	unsigned char c; /* input symbol */
 	int state = 0; /* initial state of the FSM */
@@ -586,7 +586,7 @@ Algorithm:			Set the token attribute
 					Set the string token code
 *****************************************/
 Token aa_func10(char lexeme[]) {
-
+	
 	Token t = { 0 };
 	unsigned int i = 0;
 
@@ -644,6 +644,14 @@ Algorithm:			Sets the error token
 Token aa_func11_12(char lexeme[]) {
 
 	Token t = { 0 };
+	unsigned int i = 0;
+
+	/* increment line counter if the error lexeme contains line terminators */
+	for (i = 0; i < strlen(lexeme); i++) {
+		if (lexeme[i] == NEWLINE_VAL || lexeme[i] == CR_VAL) {
+			line++;
+		}
+	}
 
 	/* set the error token */
 	t.code = ERR_T;
@@ -656,11 +664,6 @@ Token aa_func11_12(char lexeme[]) {
 	}
 	/* sprintf used to ensure that the \0 is inserted */
 	sprintf(t.attribute.err_lex, "%s", lexeme);
-
-	/* increment line counter if the error lexeme contains line terminators */
-	if (t.attribute.err_lex[ERR_LEN] == EOF_VAL1) {
-		line++;
-	}
 
 	return t;
 }

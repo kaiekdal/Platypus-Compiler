@@ -56,7 +56,7 @@ Function list:					aa_func02();
 #define QUOTE_VAL '"'
 #define DOT_VAL '.'
 #define EOF_VAL1 '\0'
-#define EOF_VAL2 '0xFF'
+#define EOF_VAL2 255
 #define NULLTERM_VAL '\0'
 #define AT_VAL '@'
 
