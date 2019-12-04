@@ -77,12 +77,15 @@ typedef enum eKW{
 
 #define NO_ATTR (-1)
 
+/*Variables for the parser*/
 static Token lookahead;
+int synerrno;
+
+/*Functions and variables from the scanner implementation*/
 extern Token malar_next_token();
 extern Buffer* str_LTBL;
 extern char* kw_table[];
 extern int line;
-int synerrno;
 
 /* Function declaration */
 void parser();
