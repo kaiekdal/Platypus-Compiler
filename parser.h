@@ -84,7 +84,7 @@ extern char* kw_table[];
 extern int line;
 int synerrno;
 
-/* Function declration */
+/* Function declaration */
 void parser();
 void match(int pr_token_code, int pr_token_attribute);
 void syn_eh(int);

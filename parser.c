@@ -7,12 +7,12 @@ Student Number:                 040918802 & 040918796
 Course Name/Number:             Compilers CST8152
 Lab Section:					312
 Assignment # :                  3
-Assignment Name:                Building a Semantic Analyzer (Scanner)
+Assignment Name:                The Parser
 Date:							December 5, 2019
 Submission Date:                December 5, 2019
 Professor:						Svillen Ranev
 List of Source and Header Files:buffer.c, scanner.c, parser.c, buffer.h, table.h, token.h, parser.h
-Purpose:						Contians the fuctions that compose the semantic analyzer
+Purpose:						Contains the functions that compose the semantic analyzer
 Function list:					parser()
 								match()
 								syn_eh(int)
@@ -55,14 +55,13 @@ Function list:					parser()
 								primary_a_relational_expression_prime()
 								primary_s_relational_expression_prime()
 *************************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
 
 /*****************************************
 Function Name:		parser
-Purpose:			The production for a platypus program
+Purpose:			The production for a Platypus program
 Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	malar_next_token(), program(), match(), gen_incode()
@@ -162,7 +161,7 @@ void syn_eh(int sync_token_code) {
 /*****************************************
 Function Name:		syn_printe
 Purpose:			Print the error associated with the token
-Author:				Kai Ekdal & Olivier Lauzon
+Author:				Svillen Ranev
 History/Versions:	1.0
 Parameters:			char* str - string to print
 Algorithm:			Print error message for specific token
@@ -259,7 +258,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), opt_statements(), gen_incode()
 Production:			<program> -> PLATYPUS {<opt_statements>}
-Fist Set:			FIRST(<program>) = {KW_T(PLATYPUS)}
+First Set:			FIRST(<program>) = {KW_T(PLATYPUS)}
 *****************************************/
 void program(void) {
 	match(KW_T, PLATYPUS); match(LBR_T, NO_ATTR); opt_statements();
@@ -274,7 +273,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	statements(), gen_incode()
 Production:			<opt_statements> -> <statements> | e
-Fist Set:			FIRST(<opt_statements>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE), e}
+First Set:			FIRST(<opt_statements>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE), e}
 *****************************************/
 void opt_statements() {
 	switch (lookahead.code) {
@@ -301,7 +300,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	statement(), statements_prime()
 Production:			<statements> -> <statement><statements_prime>
-Fist Set:			FIRST(<statements>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE)}
+First Set:			FIRST(<statements>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE)}
 *****************************************/
 void statements(void) {
 	statement();
@@ -315,7 +314,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	statement(), statements_prime()
 Production:			<statements_prime> -> <statement><statements_prime>
-Fist Set:			FIRST(<statements_prime>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE), e}
+First Set:			FIRST(<statements_prime>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE), e}
 *****************************************/
 void statements_prime(void){
 	switch (lookahead.code) {
@@ -350,7 +349,7 @@ Production:			<statement> ->
 									|<iteration statement>
 									|<input statement>
 									|<output statement>
-Fist Set:			FIRST(<statement>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE)}
+First Set:			FIRST(<statement>) = {AVID_T, SVID_T, KW_T(IF), KW_T(WHILE), KW_T(READ), KW_T(WRITE)}
 *****************************************/
 void statement(void) {
 	switch (lookahead.code) {
@@ -383,7 +382,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	assignment_expression(), match(), gen_incode()
 Production:			<assignment statement> -> <assignment expression>;
-Fist Set:			FIRST(<assignment statement>) = {AVID_T, SVID_T}
+First Set:			FIRST(<assignment statement>) = {AVID_T, SVID_T}
 *****************************************/
 void assignment_statement(void){
 	assignment_expression();
@@ -398,7 +397,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), arithmetic_expression(), string_expression(), syn_printe()
 Production:			<assignment expression> -> AVID = <arithmetic expression>|SVID = <string expression>
-Fist Set:			FIRST(<assignment expression>) = {AVID_T, SVID_T}
+First Set:			FIRST(<assignment expression>) = {AVID_T, SVID_T}
 *****************************************/
 void assignment_expression(void){
 	switch (lookahead.code) {
@@ -428,7 +427,7 @@ History/Versions:	1.0
 Called functions:	match(), gen_incode(), pre_condition(), conditional_expression(), opt_statements()
 Production:			<selection statement> -> IF <pre-condition>  (<conditional expression>) THEN { <opt_statements> }
 											 ELSE { <opt_statements> };
-Fist Set:			FIRST(<selection statement>) = {KW_T(IF)}
+First Set:			FIRST(<selection statement>) = {KW_T(IF)}
 *****************************************/
 void selection_statement(void){
 	match(KW_T, IF); pre_condition();
@@ -446,7 +445,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), pre_condition(), conditional_expression(), statements()
 Production:			<iteration statement> -> WHILE <pre-condition> (<conditional expression>) REPEAT {<statements>};
-Fist Set:			FIRST(<iteration statement>) = {KW_T(WHILE)}
+First Set:			FIRST(<iteration statement>) = {KW_T(WHILE)}
 *****************************************/
 void iteration_statement(void){
 	match(KW_T, WHILE); pre_condition();
@@ -463,7 +462,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), syn_printe()
 Production:			<pre-condition> -> TRUE | FALSE
-Fist Set:			FIRST(<pre-condition>) = {KW_T(TRUE), KW_T(FALSE)}
+First Set:			FIRST(<pre-condition>) = {KW_T(TRUE), KW_T(FALSE)}
 *****************************************/
 void pre_condition(void){
 	if (lookahead.code == KW_T) {
@@ -488,7 +487,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), variable_list()
 Production:			<input statement> -> READ (<variable list>);
-Fist Set:			FIRST(<input statement>) = {KW_T(READ)}
+First Set:			FIRST(<input statement>) = {KW_T(READ)}
 *****************************************/
 void input_statement(void){
 	match(KW_T, READ); match(LPR_T, NO_ATTR); variable_list();
@@ -504,7 +503,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	variable_identifier(), variable_list_prime(), gen_incode()
 Production:			<variable list> -> <variable identifier><variable list_prime>
-Fist Set:			FIRST(<variable list>) = {AVID_T, SVID_T}
+First Set:			FIRST(<variable list>) = {AVID_T, SVID_T}
 *****************************************/
 void variable_list(void){
 	variable_identifier();
@@ -519,7 +518,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), variable_identifier(), variable_list_prime()
 Production:			<variable list_prime> -> ,<variable identifier><variable list_prime> | e
-Fist Set:			FIRST(<variable list_prime>) = {COM_T, e}
+First Set:			FIRST(<variable list_prime>) = {COM_T, e}
 *****************************************/
 void variable_list_prime(void){
 	if (lookahead.code == COM_T) {
@@ -535,7 +534,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), syn_printe()
 Production:			<variable identifier> -> AVID_T | SVID_T
-Fist Set:			FIRST(<variable identifier>) = {AVID_T, SVID_T}
+First Set:			FIRST(<variable identifier>) = {AVID_T, SVID_T}
 *****************************************/
 void variable_identifier(void){
 	switch (lookahead.code) {
@@ -558,7 +557,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), output_var()
 Production:			<output statement> -> WRITE (<output_var>);
-Fist Set:			FIRST(<output statement>) = {KW_T(WRITE)}
+First Set:			FIRST(<output statement>) = {KW_T(WRITE)}
 *****************************************/
 void output_statement(void){
 	match(KW_T, WRITE); match(LPR_T, NO_ATTR); output_var();
@@ -573,7 +572,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), variable_list()
 Production:			<output_var> -> <variable list> | STR_T | e
-Fist Set:			FIRST(<output_var>) = {AVID_T, SVID_T, STR_T, e}
+First Set:			FIRST(<output_var>) = {AVID_T, SVID_T, STR_T, e}
 *****************************************/
 void output_var(void){
 	switch (lookahead.code) {
@@ -597,7 +596,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	gen_incode(), unary_arithmetic_expression(), additive_arithmetic_expression(), syn_printe()
 Production:			<arithmetic expression> - > <unary arithmetic expression>|<additive arithmetic expression>
-Fist Set:			FIRST(<arithmetic expression>) = {ARR_OP(PLUS), ARR_OP(MINUS), AVID_T, FPL_T, INL_T, LPR_T}
+First Set:			FIRST(<arithmetic expression>) = {ARR_OP(PLUS), ARR_OP(MINUS), AVID_T, FPL_T, INL_T, LPR_T}
 *****************************************/
 void arithmetic_expression(void){
 	switch (lookahead.code) {
@@ -626,7 +625,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), primary_arithmetic_expression(), syn_printe()
 Production:			<unary arithmetic expression> -> - <primary arithmetic expression> | + <primary arithmetic expression>
-Fist Set:			FIRST(<unary arithmetic expression>) = {ARR_OP(PLUS), ARR_OP(MINUS)}
+First Set:			FIRST(<unary arithmetic expression>) = {ARR_OP(PLUS), ARR_OP(MINUS)}
 *****************************************/
 void unary_arithmetic_expression(void){
 	switch (lookahead.attribute.arr_op) {
@@ -650,7 +649,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	multiplicative_arithmetic_expression(), additive_arithmetic_expression_prime()
 Production:			<additive arithmetic expression> -> <multiplicative arithmetic expression><additive arithmetic expression_prime>
-Fist Set:			FIRST(<additive arithmetic expression>) = {AVID_T, FPL_T, INL_T, LPR_T}
+First Set:			FIRST(<additive arithmetic expression>) = {AVID_T, FPL_T, INL_T, LPR_T}
 *****************************************/
 void additive_arithmetic_expression(void){
 	multiplicative_arithmetic_expression();
@@ -667,7 +666,7 @@ Called functions:	match(), gen_incode(),  multiplicative_arithmetic_expression()
 Production:			<additive arithmetic expression_prime> ->
 						+ <multiplicative arithmetic expression><additive arithmetic expression_prime> |
 						- <multiplicative arithmetic expression><additive arithmetic expression_prime> | e
-Fist Set:			FIRST(<additive arithmetic expression_prime>) = {ARR_OP(PLUS), ARR_OP(MINUS), e}
+First Set:			FIRST(<additive arithmetic expression_prime>) = {ARR_OP(PLUS), ARR_OP(MINUS), e}
 *****************************************/
 void additive_arithmetic_expression_prime(void){
 	if (lookahead.code == ART_OP_T) {
@@ -696,7 +695,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	primary_arithmetic_expression(), multiplicative_arithmetic_expression_prime()
 Production:			<multiplicative arithmetic expression> -> <primary arithmetic expression><multiplicative arithmetic expression_prime>
-Fist Set:			FIRST(<multiplicative arithmetic expression>) = {AVID_T, FPL_T, INL_T, LPR_T}
+First Set:			FIRST(<multiplicative arithmetic expression>) = {AVID_T, FPL_T, INL_T, LPR_T}
 *****************************************/
 void multiplicative_arithmetic_expression(void){
 	primary_arithmetic_expression();
@@ -713,7 +712,7 @@ Called functions:	match(), gen_incode(), primary_arithmetic_expression(),
 Production:			<multiplicative arithmetic expression_prime> ->
 						* <primary arithmetic expression><multiplicative arithmetic expression_prime> |
 						/ <primary arithmetic expression><multiplicative arithmetic expression_prime> | e
-Fist Set:			FIRST(<multiplicative arithmetic expression_prime>) = {ARR_OP(MULT), ARR_OP(DIV), e}
+First Set:			FIRST(<multiplicative arithmetic expression_prime>) = {ARR_OP(MULT), ARR_OP(DIV), e}
 *****************************************/
 void multiplicative_arithmetic_expression_prime(void){
 	if (lookahead.code == ART_OP_T) {
@@ -739,7 +738,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), arithmetic_expression()
 Production:			<primary arithmetic expression> -> AVID_T | FPL_T | INL_T | (<arithmetic expression>)	
-Fist Set:			FIRST(<primary arithmetic expression>) = {AVID_T, FPL_T, INL_T, LPR_T}
+First Set:			FIRST(<primary arithmetic expression>) = {AVID_T, FPL_T, INL_T, LPR_T}
 *****************************************/
 void primary_arithmetic_expression(void){
 	switch (lookahead.code) {
@@ -767,7 +766,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	gen_incode(), primary_string_expression(), string_expression_prime()
 Production:			<string expression> -> <primary string expression><string expression_prime>
-Fist Set:			FIRST(<string expression>) = {SVID_T, STR_T}
+First Set:			FIRST(<string expression>) = {SVID_T, STR_T}
 *****************************************/
 void string_expression(void){
 	primary_string_expression();
@@ -782,7 +781,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), primary_string_expression(), string_expression_prime()
 Production:			<string expression_prime> -> << <primary string expression><string expression_prime> | e
-Fist Set:			FIRST(<string expression_prime>) = {SCC_OP_T, e}
+First Set:			FIRST(<string expression_prime>) = {SCC_OP_T, e}
 *****************************************/
 void string_expression_prime(void){
 	if (lookahead.code == SCC_OP_T) {
@@ -798,7 +797,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode()
 Production:			<primary string expression> -> SVID_T | STR_T
-Fist Set:			FIRST(<primary string expression>) = {SVID_T, STR_T}
+First Set:			FIRST(<primary string expression>) = {SVID_T, STR_T}
 *****************************************/
 void primary_string_expression(void){
 	switch (lookahead.code) {
@@ -819,7 +818,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	gen_incode(), logical_OR_expression()
 Production:			<conditional expression> -> <logical OR expression>
-Fist Set:			FIRST(<conditional expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
+First Set:			FIRST(<conditional expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
 *****************************************/
 void conditional_expression(void){
 	logical_OR_expression();
@@ -833,7 +832,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	logical_AND_expression(), logical_OR_expression_prime()
 Production:			<logical OR expression> -> <logical AND expression><logical OR expression_prime>
-Fist Set:			FIRST(<logical OR expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
+First Set:			FIRST(<logical OR expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
 *****************************************/
 void logical_OR_expression(void){
 	logical_AND_expression();
@@ -847,7 +846,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), logical_AND_expression(), logical_OR_expression_prime()
 Production:			<logical OR expression_prime> -> .OR. <logical AND expression><logical OR expression_prime> | e
-Fist Set:			FIRST(<logical OR expression_prime>) = {LOG_OP_T(OR), e}
+First Set:			FIRST(<logical OR expression_prime>) = {LOG_OP_T(OR), e}
 *****************************************/
 void logical_OR_expression_prime(void){
 	if (lookahead.code == LOG_OP_T) {
@@ -868,7 +867,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	relational_expression(), logical_AND_expression_prime()
 Production:			<logical AND expression> -> <relational expression><logical AND expression_prime>
-Fist Set:			FIRST(<logical AND expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
+First Set:			FIRST(<logical AND expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
 *****************************************/
 void logical_AND_expression(void){
 	relational_expression();
@@ -882,7 +881,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), relational_expression(), logical_AND_expression_prime()
 Production:			<logical AND expression_prime> -> .AND. <relational expression><logical AND expression_prime> | e
-Fist Set:			FIRST(<logical AND expression_prime>) = {LOG_OP_T(AND), e}
+First Set:			FIRST(<logical AND expression_prime>) = {LOG_OP_T(AND), e}
 *****************************************/
 void logical_AND_expression_prime(void){
 	if (lookahead.code == LOG_OP_T) {
@@ -906,7 +905,7 @@ Called functions:	syn_printe(), gen_incode(), primary_a_relational_expression(),
 Production:			<relational expression> ->
 						<primary a_relational expression><primary a_relational expression_prime> |
 						<primary s_relational expression><primary s_relational expression_prime>
-Fist Set:			FIRST(<relational expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
+First Set:			FIRST(<relational expression>) = {AVID_T, FPL_T, INL_T, SVID_T, STR_T}
 *****************************************/
 void relational_expression(void){
 	switch (lookahead.code) {
@@ -932,7 +931,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	match(), gen_incode(), syn_printe()
 Production:			<primary a_relational expression> -> AVID_T | FPL_T | INL_T
-Fist Set:			FIRST(<primary a_relational expression>) = {AVID_T, FPL_T, INL_T}
+First Set:			FIRST(<primary a_relational expression>) = {AVID_T, FPL_T, INL_T}
 *****************************************/
 void primary_a_relational_expression(void){
 	switch (lookahead.code) {
@@ -965,7 +964,7 @@ Author:				Kai Ekdal & Olivier Lauzon
 History/Versions:	1.0
 Called functions:	gen_incode(), syn_printe(), primary_string_expression()
 Production:			<primary s_relational expression> -> <primary string expression>
-Fist Set:			FIRST(<primary s_relational expression>) = {SVID_T, STR_T}
+First Set:			FIRST(<primary s_relational expression>) = {SVID_T, STR_T}
 *****************************************/
 void primary_s_relational_expression(void){
 	switch (lookahead.code) {
@@ -994,7 +993,7 @@ Production:			<primary a_relational expression_prime> ->
 						| <> <primary a_relational  expression> 
 						| > <primary a_relational  expression> 
 						| < <primary a_relational expression>
-Fist Set:			FIRST(<primary a_relational expression_prime>) = {REL_OP_T(EQ), REL_OP_T(NE), REL_OP_T(GT), REL_OP_T(LT)}
+First Set:			FIRST(<primary a_relational expression_prime>) = {REL_OP_T(EQ), REL_OP_T(NE), REL_OP_T(GT), REL_OP_T(LT)}
 *****************************************/
 void primary_a_relational_expression_prime(void){
 	if (lookahead.code == REL_OP_T) {
@@ -1030,7 +1029,7 @@ Production:			<primary s_relational expression_prime> ->
 						| <> <primary s_relational  expression> 
 						| > <primary s_relational  expression> 
 						| < <primary s_relational expression>
-Fist Set:			FIRST(<primary s_relational expression_prime>) = {REL_OP_T(EQ), REL_OP_T(NE), REL_OP_T(GT), REL_OP_T(LT)}
+First Set:			FIRST(<primary s_relational expression_prime>) = {REL_OP_T(EQ), REL_OP_T(NE), REL_OP_T(GT), REL_OP_T(LT)}
 *****************************************/
 void primary_s_relational_expression_prime(void){
 	if (lookahead.code == REL_OP_T) {
