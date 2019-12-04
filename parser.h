@@ -1,3 +1,61 @@
+/************************************************
+Filename:                       parser.h
+Compiler:						MS Visual Studio Enterprise 2019
+Version:                        1.0
+Authors:		                Kai Ekdal & Olivier Lauzon
+Student Number:                 040918802 & 040918796
+Course Name/Number:             Compilers CST8152
+Lab Section:					312
+Assignment # :                  3
+Assignment Name:                Building a Semantic Analyzer (Scanner)
+Date:							December 5, 2019
+Submission Date:                December 5, 2019
+Professor:						Svillen Ranev
+List of Source and Header Files:buffer.c, scanner.c, parser.c, buffer.h, table.h, token.h, parser.h
+Purpose:						Constants and externs required by the semantic analyzer
+Function list:					parser()
+								match()
+								syn_eh(int)
+								syn_printe()
+								gen_incode()
+								program()
+								opt_statements()
+								statements()
+								statements_prime()
+								statement()
+								assignment_statement()
+								assignment_expression()
+								selection_statement()
+								iteration_statement()
+								pre_condition()
+								input_statement()
+								variable_list()
+								variable_list_prime()
+								variable_identifier()
+								output_statement()
+								output_var()
+								arithmetic_expression()
+								unary_arithmetic_expression()
+								additive_arithmetic_expression()
+								additive_arithmetic_expression_prime()
+								multiplicative_arithmetic_expression()
+								multiplicative_arithmetic_expression_prime()
+								primary_arithmetic_expression()
+								string_expression()
+								string_expression_prime()
+								primary_string_expression()
+								conditional_expression()
+								logical_OR_expression()
+								logical_OR_expression_prime()
+								logical_AND_expression()
+								logical_AND_expression_prime()
+								relational_expression()
+								primary_a_relational_expression()
+								primary_s_relational_expression()
+								primary_a_relational_expression_prime()
+								primary_s_relational_expression_prime()
+*************************************************/
+
 #ifndef PARSER_H
 #define PARSER_H
 
