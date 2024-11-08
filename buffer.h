@@ -2,15 +2,6 @@
 Filename:                       buffer.h
 Compiler:						MS Visual Studio Enterprise 2019
 Version:                        1.19.3
-Author:							Kai Ekdal
-Student Number:                 040918802
-Course Name/Number:             Compilers CST8152
-Lab Section:					312
-Assignment # :                  1
-Assignment Name:                Programming and Using Buffers
-Date:							October 2, 2019
-Submission Date:                October 2, 2019
-Professor:						Svillen Ranev
 List of Source and Header Files:buffer.c, buffer.h
 Purpose:						Programming and Using Dynamic Structures
 								(buffers) with C
