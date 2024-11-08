@@ -1,10 +1,5 @@
 /* Filename: token.h
  * Token declarations necessary for the scanner implementation 
- * CST8152, Assignment #2
- * Version: 1.19.2
- * Date: 2 October 2019
- * Provided by: Svillen Ranev
- * The file is complete and MUST NOT be modified. 
  */
 #ifndef TOKEN_H_
 #define TOKEN_H_
